@@ -1,7 +1,10 @@
 // Object definitions
 
-const PLEDGE_TYPES = { 1: "Pledge", 2: "Credit Card", 3: "GIRO" };
-const PLEDGE_TYPES_SHORT = { 1: "P", 2: "C", 3: "G" };
+const TYPE_PL = 1; // pledge
+const TYPE_CC = 2; // credit card
+const TYPE_GR = 3; // GIRO
+const TYPES = { 1: "Pledge", 2: "Credit Card", 3: "GIRO" };
+const TYPES_SHORT = { 1: "P", 2: "C", 3: "G" };
 
 function Caller(name) {
     // define a Caller
@@ -12,9 +15,12 @@ function Caller(name) {
 Caller.prototype = {
     constructor: Caller,
     addPledge: function (pledge) {
+        // Add a pledge to the caller's pledges
         this.pledges.push(pledge);
     },
     pledgeToStr: function () {
+        // String representation of pledge list
+        // uses Pledge.toShortStr()
         var plgs = [];
         this.pledges.sort(comparePledge).forEach(element => {
             plgs.push(element.toShortStr());
@@ -22,6 +28,8 @@ Caller.prototype = {
         return plgs.join(",")
     },
     toStr: function () {
+        // String representation of the Caller object
+        // e.g. Caller X getting (P)100,(C)50,(G)10
         return ("Caller " + this.name + " getting " + this.pledgeToStr());
     }
 }
@@ -35,10 +43,14 @@ function Pledge(amount, type) {
 Pledge.prototype = {
     constructor: Pledge,
     toStr: function () {
-        return ("$" + this.amount + " " + PLEDGE_TYPES[this.type]);
+        // Full string representation of a Pledge object
+        // e.g. $50 Pledge
+        return ("$" + this.amount + " " + TYPES[this.type]);
     },
     toShortStr: function () {
-        return ("(" + PLEDGE_TYPES_SHORT[this.type] + ")" + this.amount)
+        // Short string representation of a Pledge object
+        // e.g. (P)50
+        return ("(" + TYPES_SHORT[this.type] + ")" + this.amount)
     }
 }
 
@@ -81,21 +93,21 @@ function process(data, tabletop) {
         if (data[i].Pledge) {
             var pledges = data[i].Pledge.split(',');
             pledges.forEach(element => {
-                caller.addPledge(new Pledge(parseInt(element), 1));
+                caller.addPledge(new Pledge(parseInt(element), TYPE_PL));
             });
         };
 
         if (data[i].CC) {
             var ccs = data[i].CC.split(',');
             ccs.forEach(element => {
-                caller.addPledge(new Pledge(parseInt(element), 2));
+                caller.addPledge(new Pledge(parseInt(element), TYPE_CC));
             });
         };
 
         if (data[i].GIRO) {
             var giros = data[i].GIRO.split(',');
             giros.forEach(element => {
-                caller.addPledge(new Pledge(parseInt(element), 3));
+                caller.addPledge(new Pledge(parseInt(element), TYPE_GR));
             });
         };
 
