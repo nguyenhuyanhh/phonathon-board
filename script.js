@@ -74,8 +74,7 @@ function comparePledge(pledge1, pledge2) {
 // Spreadsheet processing
 
 var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic/pubhtml';
-var callers = []
-var table = document.createElement("table");
+var body = document.getElementById("main-div");
 
 function init() {
     Tabletop.init({
@@ -115,33 +114,36 @@ function process(data, tabletop) {
         // log output to compare with visual output later
         console.log(caller.toStr());
 
-        // visual output
-        var tr = document.createElement("tr");
-        var tdName = document.createElement("td").appendChild(document.createTextNode(caller.name));
-        var tdPledges = document.createElement("td");
+        // visual output, using Bootstrap elements
+        var row = document.createElement("div");
+        row.className = "row";
+
+        var colName = document.createElement("div");
+        colName.className = "col-md-1 col-xs-4";
+        colName.innerHTML = caller.name;
+        row.appendChild(colName);
+
         caller.pledges.sort(comparePledge).forEach(element => {
-            tdPledges.appendChild(outputHTML(element));
+            row.appendChild(toHtml(element));
         });
-        tr.appendChild(tdName);
-        tr.appendChild(tdPledges);
-        table.appendChild(tr);
+
+        document.getElementById("main-div").appendChild(row);
     }
-    document.body.appendChild(table);
 }
 
-function outputHTML(pledge) {
-    var span = document.createElement("span");
-    span.innerHTML = pledge.amount;
+function toHtml(pledge) {
+    var div = document.createElement("div");
+    div.innerHTML = pledge.amount;
     if (pledge.type == TYPE_PL) {
-        span.className = "disp-pl";
+        div.className = "disp-pl col-md-1 col-xs-3";
     }
     if (pledge.type == TYPE_CC) {
-        span.className = "disp-cc";
+        div.className = "disp-cc col-md-1 col-xs-3";
     }
     if (pledge.type == TYPE_GR) {
-        span.className = "disp-gr";
+        div.className = "disp-gr col-md-1 col-xs-3";
     }
-    return span
+    return div
 }
 
 window.addEventListener('DOMContentLoaded', init)
