@@ -1,0 +1,36 @@
+.disp-pl {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: #fff;
+    border: 2px solid blue;
+    color: blue;
+    text-align: center;
+    /* font: 16px Arial sans-serif; */
+}
+.disp-cc {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: #fff;
+    border: 2px solid red;
+    color:red;
+    text-align: center;
+    /* font: 16px Arial sans-serif; */
+}
+.disp-gr {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: #fff;
+    border: 2px solid green;
+    color: green;
+    text-align: center;
+    /* font: 16px Arial sans-serif; */
+}
+tr {
+    height: 45px;
+}

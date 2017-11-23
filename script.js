@@ -75,6 +75,7 @@ function comparePledge(pledge1, pledge2) {
 
 var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic/pubhtml';
 var callers = []
+var table = document.createElement("table");
 
 function init() {
     Tabletop.init({
@@ -111,9 +112,36 @@ function process(data, tabletop) {
             });
         };
 
+        // log output to compare with visual output later
         console.log(caller.toStr());
-        callers.push(caller);
+
+        // visual output
+        var tr = document.createElement("tr");
+        var tdName = document.createElement("td").appendChild(document.createTextNode(caller.name));
+        var tdPledges = document.createElement("td");
+        caller.pledges.sort(comparePledge).forEach(element => {
+            tdPledges.appendChild(outputHTML(element));
+        });
+        tr.appendChild(tdName);
+        tr.appendChild(tdPledges);
+        table.appendChild(tr);
     }
+    document.body.appendChild(table);
+}
+
+function outputHTML(pledge) {
+    var span = document.createElement("span");
+    span.innerHTML = pledge.amount;
+    if (pledge.type == TYPE_PL) {
+        span.className = "disp-pl";
+    }
+    if (pledge.type == TYPE_CC) {
+        span.className = "disp-cc";
+    }
+    if (pledge.type == TYPE_GR) {
+        span.className = "disp-gr";
+    }
+    return span
 }
 
 window.addEventListener('DOMContentLoaded', init)
