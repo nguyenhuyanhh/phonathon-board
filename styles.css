@@ -1,33 +1,38 @@
+/* Styles for the pledges */
 .disp-pl {
-    /* border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 8px;
-    background: #fff; */
     border: 2px solid blue;
     color: blue;
     text-align: center;
-    /* font: 16px Arial sans-serif; */
 }
 .disp-cc {
-    /* border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 8px;
-    background: #fff; */
     border: 2px solid red;
     color:red;
     text-align: center;
-    /* font: 16px Arial sans-serif; */
 }
 .disp-gr {
-    /* border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 8px;
-    background: #fff; */
     border: 2px solid green;
     color: green;
     text-align: center;
-    /* font: 16px Arial sans-serif; */
+}
+
+/* Styles for main elements */
+#main-div {
+    padding-bottom: 70px;
+}
+footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+}
+footer p a {
+    border-bottom: 1px dotted white;
+    color: white;
+}
+footer p a:hover, footer p a:focus {
+    border-bottom: 1px solid white;
+    text-decoration: none;
+    color: white;
+}
+footer p i.fa-heart {
+    color: red;
 }
