@@ -119,7 +119,7 @@ function process(data, tabletop) {
         row.className = "row";
 
         var colName = document.createElement("div");
-        colName.className = "col-md-1 col-xs-4";
+        colName.className = "col-xs-3 col-sm-2 col-md-1";
         colName.innerHTML = caller.name;
         row.appendChild(colName);
 
@@ -135,13 +135,13 @@ function toHtml(pledge) {
     var div = document.createElement("div");
     div.innerHTML = pledge.amount;
     if (pledge.type == TYPE_PL) {
-        div.className = "disp-pl col-md-1 col-xs-3";
+        div.className = "disp-pl col-xs-2 col-sm-1 col-md-1";
     }
     if (pledge.type == TYPE_CC) {
-        div.className = "disp-cc col-md-1 col-xs-3";
+        div.className = "disp-cc col-xs-2 col-sm-1 col-md-1";
     }
     if (pledge.type == TYPE_GR) {
-        div.className = "disp-gr col-md-1 col-xs-3";
+        div.className = "disp-gr col-xs-2 col-sm-1 col-md-1";
     }
     return div
 }

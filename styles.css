@@ -16,6 +16,18 @@
 }
 
 /* Styles for main elements */
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+.row.content {
+    height: 768px
+}
+.sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+    height: 100%;
+}
 #main-div {
     padding-bottom: 70px;
 }
