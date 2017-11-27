@@ -116,10 +116,10 @@ function process(data, tabletop) {
 
         // visual output, using Bootstrap elements
         var row = document.createElement("div");
-        row.className = "row";
+        row.className = "row-caller row";
 
         var colName = document.createElement("div");
-        colName.className = "col-xs-3 col-sm-2 col-md-1";
+        colName.className = "col-caller col-xs-3 col-sm-3 col-md-2";
         colName.innerHTML = caller.name;
         row.appendChild(colName);
 
@@ -133,16 +133,19 @@ function process(data, tabletop) {
 
 function toHtml(pledge) {
     var div = document.createElement("div");
-    div.innerHTML = pledge.amount;
+    div.className = "col-pledge col-xs-2 col-sm-1 col-md-1";
+    var subdiv = document.createElement("div");
+    subdiv.innerHTML = pledge.amount;
     if (pledge.type == TYPE_PL) {
-        div.className = "disp-pl col-xs-2 col-sm-1 col-md-1";
+        subdiv.className = "col-pldg col-pl";
     }
     if (pledge.type == TYPE_CC) {
-        div.className = "disp-cc col-xs-2 col-sm-1 col-md-1";
+        subdiv.className = "col-pldg col-cc";
     }
     if (pledge.type == TYPE_GR) {
-        div.className = "disp-gr col-xs-2 col-sm-1 col-md-1";
+        subdiv.className = "col-pldg col-gr";
     }
+    div.appendChild(subdiv);
     return div
 }
 

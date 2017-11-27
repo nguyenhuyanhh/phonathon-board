@@ -1,50 +1,74 @@
-/* Styles for the pledges */
-.disp-pl {
+/* Styles for the pledge elements */
+.row-caller {
+    height: 48px;
+}
+.col-caller {
+    height: 48px;
+    line-height: 48px;
+    font-size: 1.75em;
+    padding-left: 10px;
+    padding-right: 0px;
+}
+.col-pledge {
+    height: 48px;
+    line-height: 48px;
+    padding: 0px 0px;
+}
+.col-pldg {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.1em;
+    text-align: center;
+    display: inline-block;
+}
+.col-pl {
     border: 2px solid blue;
     color: blue;
-    text-align: center;
 }
-.disp-cc {
+.col-cc {
     border: 2px solid red;
     color:red;
-    text-align: center;
 }
-.disp-gr {
+.col-gr {
     border: 2px solid green;
     color: green;
-    text-align: center;
 }
 
 /* Styles for main elements */
-.navbar {
-    margin-bottom: 0;
-    border-radius: 0;
-}
-.row.content {
-    height: 768px
-}
-.sidenav {
-    padding-top: 20px;
-    background-color: #f1f1f1;
-    height: 100%;
-}
-#main-div {
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    padding-top: 70px;
     padding-bottom: 70px;
 }
-footer {
-    background-color: #555;
-    color: white;
-    padding: 15px;
+.navbar#top-nav {
+    margin-bottom: 0px;
+    border-radius: 0%;
 }
-footer p a {
+.row.row-main {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+/* Styles for footer */
+#footer {
+    border-width: 0px;
+    display: inline;
+}
+#footer p {
+    color: white;
+}
+#footer p a {
     border-bottom: 1px dotted white;
     color: white;
 }
-footer p a:hover, footer p a:focus {
+#footer p a:hover, footer p a:focus {
     border-bottom: 1px solid white;
     text-decoration: none;
     color: white;
 }
-footer p i.fa-heart {
+#footer p i.fa-heart {
     color: red;
 }

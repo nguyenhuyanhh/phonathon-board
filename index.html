@@ -8,31 +8,37 @@
     <title>Phonathon Board</title>
     <script src='vendored/tabletop.min.js'></script>
     <script src='script.js'></script>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="vendored/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
         crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-    <nav class="navbar"></nav>
+    <nav class="navbar navbar-fixed-top navbar-inverse" id="top-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Phonathon</a>
+            <p class="navbar-text">Updates</p>
+        </div>
+    </nav>
 
-    <div class="container-fluid">
-        <div class="row content">
-            <div class="col-xs-1 col-sm-1 col-md-1 sidenav"></div>
-            <div class="col-xs-10 col-sm-10 col-md-10 container-fluid" id="main-div"></div>
-            <div class="col-xs-1 col-sm-1 col-md-1 sidenav"></div>
+    <div class="container-fluid container-main">
+        <div class="row row-main">
+            <div class="container-fluid" id="main-div"></div>
         </div>
     </div>
 
-    <footer class="container-fluid text-center navbar navbar-fixed-bottom">
-        <p>Made with
-            <i class="fa fa-heart" aria-hidden="true"></i> using
-            <a href="https://github.com/jsoma/tabletop" target="_blank">Tabletop</a>,
-            <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> and
-            <a href="http://fontawesome.io/" target="_blank">Font Awesome</a>. Source code is on
-            <a href="https://github.com/nguyenhuyanhh/phonathon-board" target="_blank">GitHub</a>.</p>
-    </footer>
+    <nav class="navbar navbar-fixed-bottom navbar-inverse">
+        <div class="container-fluid text-center" id="footer">
+            <p>Made with
+                <i class="fa fa-heart" aria-hidden="true"></i> using
+                <a href="https://github.com/jsoma/tabletop" target="_blank">Tabletop</a>,
+                <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a> and
+                <a href="http://fontawesome.io/" target="_blank">Font Awesome</a>. Source code is on
+                <a href="https://github.com/nguyenhuyanhh/phonathon-board" target="_blank">GitHub</a>.</p>
+        </div>
+    </nav>
 
 </body>
 
