@@ -1,17 +1,17 @@
 /* Styles for the pledge elements */
 .row-caller {
-    height: 48px;
+    height: 44px;
 }
 .col-caller {
-    height: 48px;
-    line-height: 48px;
-    font-size: 1.75em;
+    height: 44px;
+    line-height: 44px;
+    font-size: 1.6em;
     padding-left: 10px;
     padding-right: 0px;
 }
 .col-pledge {
-    height: 48px;
-    line-height: 48px;
+    height: 44px;
+    line-height: 44px;
     padding: 0px 0px;
 }
 .col-pldg {
@@ -39,7 +39,6 @@
 /* Styles for main elements */
 body {
     font-family: 'Roboto', sans-serif;
-    height: 100vh;
     padding-top: 70px;
     padding-bottom: 70px;
 }
@@ -55,10 +54,10 @@ body {
 /* Styles for footer */
 #footer {
     border-width: 0px;
-    display: inline;
 }
 #footer p {
-    color: white;
+    width: 100%;
+    text-align: center;
 }
 #footer p a {
     border-bottom: 1px dotted white;
