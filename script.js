@@ -74,8 +74,7 @@ function comparePledge(pledge1, pledge2) {
 // Spreadsheet processing
 
 var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic/pubhtml';
-var body = document.getElementById("main-div");
-
+var callers = [];
 function init() {
     Tabletop.init({
         key: publicSpreadsheetUrl,
@@ -85,6 +84,7 @@ function init() {
 }
 
 function process(data, tabletop) {
+    // process the spreadsheet
     for (var i = 0; i < data.length; i++) {
         // get caller
         var caller = new Caller(data[i].Caller);
@@ -113,8 +113,15 @@ function process(data, tabletop) {
 
         // log output to compare with visual output later
         console.log(caller.toStr());
+        callers.push(caller);
+    }
+    output();
+}
 
-        // visual output, using Bootstrap elements
+// var body = document.getElementById("main-div");
+function output() {
+    // HTML representation of the data
+    callers.forEach(caller => {
         var row = document.createElement("div");
         row.className = "row-caller row";
 
@@ -128,7 +135,7 @@ function process(data, tabletop) {
         });
 
         document.getElementById("main-div").appendChild(row);
-    }
+    });
 }
 
 function toHtml(pledge) {
