@@ -39,10 +39,6 @@ body {
     padding-top: 70px;
     padding-bottom: 70px;
 }
-.navbar#top-nav {
-    margin-bottom: 0px;
-    border-radius: 0%;
-}
 .row.row-main {
     padding-left: 50px;
     padding-right: 50px;
@@ -80,5 +76,23 @@ body {
     .row.row-main {
         padding-left: 10px;
         padding-right: 10px;
+    }
+    .col-caller {
+        height: 32px;
+        line-height: 32px;
+        font-size: 1em;
+    }
+    .col-pledge {
+        height: 32px;
+        line-height: 32px;
+    }
+    .col-pldg {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 0.7em;
+    }
+    .col-cc, .col-pl, .col-gr {
+        border-width: 1px;
     }
 }
