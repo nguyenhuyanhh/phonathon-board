@@ -118,21 +118,34 @@ function process(data, tabletop) {
     output();
 }
 
-// var body = document.getElementById("main-div");
 function output() {
     // HTML representation of the data
     callers.forEach(caller => {
+        // Caller's outer row
         var row = document.createElement("div");
         row.className = "row-caller row";
 
+        // Caller's name
         var colName = document.createElement("div");
-        colName.className = "col-caller col-xs-3 col-sm-3 col-md-2";
         colName.innerHTML = caller.name;
-        row.appendChild(colName);
 
-        caller.pledges.sort(comparePledge).forEach(element => {
-            row.appendChild(toHtml(element));
-        });
+        // Pledges' outer row
+        var colPledges = document.createElement("div");
+
+        // Pledges
+        if (caller.pledges.length === 0) {
+            colName.className = "col-caller col-xs-3 col-sm-3 col-md-2 col-xs-offset-right-9 col-sm-offset-right-9 col-md-offset-right-10";
+            row.appendChild(colName);
+        }
+        else {
+            colName.className = "col-caller col-xs-3 col-sm-3 col-md-2";
+            colPledges.className = "row col-xs-9 col-sm-9 col-md-10";
+            caller.pledges.sort(comparePledge).forEach(element => {
+                colPledges.appendChild(toHtml(element));
+            });
+            row.appendChild(colName);
+            row.appendChild(colPledges);
+        }
 
         document.getElementById("main-div").appendChild(row);
     });
