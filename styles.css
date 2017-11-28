@@ -5,7 +5,7 @@
 .col-caller {
     height: 44px;
     line-height: 44px;
-    font-size: 1.6em;
+    font-size: 1.5em;
     padding-left: 10px;
     padding-right: 0px;
 }
@@ -70,4 +70,18 @@ body {
 }
 #footer p i.fa-heart {
     color: red;
+}
+
+/* Responsive stuff for tablet and mobile */
+@media only screen and (max-width:800px) {
+    .row.row-main {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+@media only screen and (max-width:500px) {
+    .row.row-main {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
