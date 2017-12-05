@@ -1,3 +1,10 @@
+// Clock for cosmetic reasons
+
+function time() {
+    document.getElementById("clock").textContent = new Date().toString();
+}
+setInterval(time, 1000);
+
 // Object definitions
 
 const TYPE_PL = 1; // pledge
