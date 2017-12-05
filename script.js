@@ -1,3 +1,5 @@
+const REFRESH_INTERVAL = 30000; // 30 seconds
+
 // Clock for cosmetic reasons
 
 function time() {
@@ -114,9 +116,15 @@ function comparePledge(pledge1, pledge2) {
 
 // Spreadsheet processing
 
-var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic/pubhtml';
+var publicSpreadsheetUrl = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 var callers = [];
-function init() {
+
+function loadBoard() {
+    callers = [];
+    var mainDiv = document.getElementById("main-div");
+    while (mainDiv.firstChild) {
+        mainDiv.removeChild(mainDiv.firstChild);
+    } // clear the main div first
     Tabletop.init({
         key: publicSpreadsheetUrl,
         callback: process,
@@ -241,4 +249,6 @@ function toHtml(pledge) {
     return div
 }
 
-window.addEventListener('DOMContentLoaded', init)
+// Auto-refresh
+window.addEventListener('DOMContentLoaded', loadBoard);
+setInterval(loadBoard, REFRESH_INTERVAL);
