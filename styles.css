@@ -95,4 +95,7 @@ body {
     .col-cc, .col-pl, .col-gr {
         border-width: 1px;
     }
+    #clock {
+        display: none;
+    }
 }
