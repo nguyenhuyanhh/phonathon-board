@@ -120,11 +120,8 @@ var publicSpreadsheetUrl = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 var callers = [];
 
 function loadBoard() {
+    console.log("Refreshing data from spreadsheet.")
     callers = [];
-    var mainDiv = document.getElementById("main-div");
-    while (mainDiv.firstChild) {
-        mainDiv.removeChild(mainDiv.firstChild);
-    } // clear the main div first
     Tabletop.init({
         key: publicSpreadsheetUrl,
         callback: process,
@@ -164,6 +161,12 @@ function process(data, tabletop) {
         console.log(caller.toStr());
         callers.push(caller);
     }
+
+    // output
+    var mainDiv = document.getElementById("main-div");
+    while (mainDiv.firstChild) {
+        mainDiv.removeChild(mainDiv.firstChild);
+    } // clear the main div first
     output();
 }
 
@@ -179,7 +182,6 @@ const CLS_PLDG = "col-pledge col-xs-2 col-sm-2 col-md-2 col-lg-2";
 
 function output() {
     // HTML representation of the data
-
     callers = callers.sort(compareCaller).reverse(); // sort callers
     callers.forEach(caller => {
         // Caller's outer row
@@ -232,6 +234,7 @@ function output() {
 }
 
 function toHtml(pledge) {
+    // return HTML div of a pledge
     var div = document.createElement("div");
     div.className = CLS_PLDG;
     var subdiv = document.createElement("div");
