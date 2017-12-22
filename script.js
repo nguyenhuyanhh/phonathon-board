@@ -1,11 +1,22 @@
 const REFRESH_INTERVAL = 30000; // 30 seconds
+const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 30
+var clk = CLOCK_SIGNAL;
 
 // Clock for cosmetic reasons
 
-function time() {
-    document.getElementById("clock").textContent = new Date().toString();
+function resetClk() {
+    clk = CLOCK_SIGNAL;
 }
-setInterval(time, 1000);
+
+function clock() {
+    document.getElementById("clock").textContent = "Refreshing in " + clk + "...";
+    if (clk == 1) {
+        resetClk();
+    } else {
+        clk--;
+    }
+}
+setInterval(clock, 1000);
 
 // Object definitions
 
@@ -254,4 +265,12 @@ function toHtml(pledge) {
 
 // Auto-refresh
 window.addEventListener('DOMContentLoaded', loadBoard);
-setInterval(loadBoard, REFRESH_INTERVAL);
+var id = setInterval(loadBoard, REFRESH_INTERVAL);
+
+// Manual refresh
+function manualRefresh() {
+    clearInterval(id);
+    resetClk();
+    loadBoard();
+    id = setInterval(loadBoard, REFRESH_INTERVAL);
+}

@@ -95,7 +95,7 @@ body {
     .col-cc, .col-pl, .col-gr {
         border-width: 1px;
     }
-    #clock {
+    #clock, #refresh {
         display: none;
     }
 }
