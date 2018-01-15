@@ -46,7 +46,7 @@ Caller.prototype = {
         // String representation of pledge list
         // uses Pledge.toShortStr()
         var plgs = [];
-        this.pledges.sort(comparePledge).forEach(element => {
+        this.pledges.forEach(element => {
             plgs.push(element.toShortStr());
         });
         return plgs.join(",")
@@ -150,21 +150,21 @@ function process(data, tabletop) {
         if (data[i].Pledge) {
             var pledges = data[i].Pledge.split(',');
             pledges.forEach(element => {
-                caller.addPledge(new Pledge(parseInt(element), TYPE_PL));
+                caller.addPledge(new Pledge(element, TYPE_PL));
             });
         };
 
         if (data[i].CC) {
             var ccs = data[i].CC.split(',');
             ccs.forEach(element => {
-                caller.addPledge(new Pledge(parseInt(element), TYPE_CC));
+                caller.addPledge(new Pledge(element, TYPE_CC));
             });
         };
 
         if (data[i].GIRO) {
             var giros = data[i].GIRO.split(',');
             giros.forEach(element => {
-                caller.addPledge(new Pledge(parseInt(element), TYPE_GR));
+                caller.addPledge(new Pledge(element, TYPE_GR));
             });
         };
 
@@ -218,7 +218,9 @@ function output() {
 
             // split pledges in groups of 6
             // each put into a row
-            var sortedPledges = caller.pledges.sort(comparePledge);
+            // var sortedPledges = caller.pledges.sort(comparePledge);
+            var sortedPledges = caller.pledges;
+            console.log(sortedPledges);
             var countRows = Math.floor(sortedPledges.length / 6);
             for (var i = 0; i <= countRows; i++) {
                 // wrapping elements
