@@ -87,10 +87,11 @@ function compareCaller(caller1, caller2) {
     return 0;
 }
 
-function Pledge(amount, type) {
+function Pledge(amount, type, sortOrder) {
     // define a Pledge
     this.amount = amount;
     this.type = type;
+    this.sortOrder = sortOrder;
 }
 
 Pledge.prototype = {
@@ -102,7 +103,7 @@ Pledge.prototype = {
     }
 }
 
-function comparePledge(pledge1, pledge2) {
+function comparePledgeAmount(pledge1, pledge2) {
     // compare pledges based on type, then amount
     if (pledge1.type < pledge2.type) {
         return -1;
@@ -114,6 +115,23 @@ function comparePledge(pledge1, pledge2) {
         return -1;
     }
     if (pledge1.amount > pledge2.amount) {
+        return 1;
+    }
+    return 0;
+}
+
+function comparePledgeOrder(pledge1, pledge2) {
+    // compare pledges based on type, then sort order
+    if (pledge1.type < pledge2.type) {
+        return -1;
+    }
+    if (pledge1.type > pledge2.type) {
+        return 1;
+    }
+    if (pledge1.sortOrder < pledge2.sortOrder) {
+        return -1;
+    }
+    if (pledge1.sortOrder > pledge2.sortOrder) {
         return 1;
     }
     return 0;
@@ -133,10 +151,38 @@ function loadBoard() {
     })
 }
 
+function pledgesFromStr(caller, str, type, special) {
+    // get the pledges from a str, add to a Caller
+    var order = 0;
+    var pledges = str.split(',');
+    pledges.forEach(element => {
+        if (special == '1') {
+            caller.addPledge(new Pledge(element, type, order));
+        }
+        else {
+            if (!isNaN(element)) {
+                caller.addPledge(new Pledge(parseInt(element), type, order));
+            }
+        }
+        order++;
+    });
+}
+
 function process(data, tabletop) {
     // get the spreadsheet
     data = tabletop.sheets("Pledges").all();
-    settings = tabletop.sheets("Settings").all()[0];
+    var settings = tabletop.sheets("Settings").all()[0];
+
+    // log the settings
+    if (settings.special_mode == '1') {
+        console.log("Special mode is on.");
+    }
+    if (settings.maintenance == '1') {
+        console.log("Maintenance mode is on.");
+    }
+    if (settings.manual_refresh == '1') {
+        console.log("Auto-refresh is off.");
+    }
 
     // process the spreadsheet
     for (var i = 0; i < data.length; i++) {
@@ -145,22 +191,13 @@ function process(data, tabletop) {
 
         // get pledges
         if (data[i].Pledge) {
-            var pledges = data[i].Pledge.split(',');
-            pledges.forEach(element => {
-                caller.addPledge(new Pledge(element, TYPE_PL));
-            });
+            pledgesFromStr(caller, data[i].Pledge, TYPE_PL, settings.special_mode);
         };
         if (data[i].CC) {
-            var ccs = data[i].CC.split(',');
-            ccs.forEach(element => {
-                caller.addPledge(new Pledge(element, TYPE_CC));
-            });
+            pledgesFromStr(caller, data[i].CC, TYPE_CC, settings.special_mode);
         };
         if (data[i].GIRO) {
-            var giros = data[i].GIRO.split(',');
-            giros.forEach(element => {
-                caller.addPledge(new Pledge(element, TYPE_GR));
-            });
+            pledgesFromStr(caller, data[i].GIRO, TYPE_GR, settings.special_mode);
         };
         callers.push(caller);
     }
@@ -185,8 +222,6 @@ const CLS_PLDG = "col-pledge col-xs-2 col-sm-2 col-md-2 col-lg-2";
 
 function output(config) {
     if (config.maintenance == '1') {
-        console.log("Maintenance mode on.")
-
         // Render maintenance site
         var maintDiv = document.createElement("div");
         maintDiv.innerHTML = "The site is under maintenance, please come back later!";
@@ -223,8 +258,12 @@ function output(config) {
 
                 // split pledges in groups of 6
                 // each put into a row
-                // var sortedPledges = caller.pledges.sort(comparePledge);
-                var sortedPledges = caller.pledges;
+                if (config.special_mode == '1') {
+                    var sortedPledges = caller.pledges.sort(comparePledgeOrder);
+                }
+                else {
+                    var sortedPledges = caller.pledges.sort(comparePledgeAmount);
+                }
                 var countRows = Math.floor(sortedPledges.length / 6);
                 for (var i = 0; i <= countRows; i++) {
                     // wrapping elements
