@@ -136,11 +136,14 @@ function loadBoard() {
     Tabletop.init({
         key: publicSpreadsheetUrl,
         callback: process,
-        simpleSheet: true
     })
 }
 
 function process(data, tabletop) {
+    // get the spreadsheet
+    data = tabletop.sheets("Pledges").all();
+    settings = tabletop.sheets("Settings").all()[0];
+
     // process the spreadsheet
     for (var i = 0; i < data.length; i++) {
         // get caller
@@ -153,23 +156,18 @@ function process(data, tabletop) {
                 caller.addPledge(new Pledge(element, TYPE_PL));
             });
         };
-
         if (data[i].CC) {
             var ccs = data[i].CC.split(',');
             ccs.forEach(element => {
                 caller.addPledge(new Pledge(element, TYPE_CC));
             });
         };
-
         if (data[i].GIRO) {
             var giros = data[i].GIRO.split(',');
             giros.forEach(element => {
                 caller.addPledge(new Pledge(element, TYPE_GR));
             });
         };
-
-        // log output to compare with visual output later
-        console.log(caller.toStr());
         callers.push(caller);
     }
 
@@ -178,7 +176,7 @@ function process(data, tabletop) {
     while (mainDiv.firstChild) {
         mainDiv.removeChild(mainDiv.firstChild);
     } // clear the main div first
-    output();
+    output(settings);
 }
 
 // Style constant for one-column layout for name only
@@ -191,58 +189,72 @@ const CLS_PLEDGES = "container-fluid col-xs-12 col-sm-6 col-md-4 col-lg-3";
 // Style constant for a single pledge
 const CLS_PLDG = "col-pledge col-xs-2 col-sm-2 col-md-2 col-lg-2";
 
-function output() {
-    // HTML representation of the data
-    callers = callers.sort(compareCaller).reverse(); // sort callers
-    callers.forEach(caller => {
-        // Caller's outer row
-        var row = document.createElement("div");
-        row.className = "row-caller row";
+function output(config) {
+    if (config.maintenance == '1') {
+        console.log("Maintenance mode on.")
 
-        // Caller's name
-        var colName = document.createElement("div");
-        colName.innerHTML = caller.name;
+        // Render maintenance site
+        var maintDiv = document.createElement("div");
+        maintDiv.innerHTML = "The site is under maintenance, please come back later!";
+        maintDiv.className = "maint";
+        document.getElementById("main-div").appendChild(maintDiv);
+    }
+    else {
+        // HTML representation of the data
+        callers = callers.sort(compareCaller).reverse(); // sort callers
+        callers.forEach(caller => {
+            // Log output to compare with visual output later
+            console.log(caller.toStr());
 
-        // Pledges' outer row
-        var colPledges = document.createElement("div");
+            // Caller's outer row
+            var row = document.createElement("div");
+            row.className = "row-caller row";
 
-        // Pledges
-        if (caller.pledges.length === 0) {
-            // no pledges, just output caller name
-            colName.className = CLS_NAME_ONLY;
-            row.appendChild(colName);
-        }
-        else {
-            colName.className = CLS_NAME_WITH_PL;
-            colPledges.className = CLS_PLEDGES_WITH_PL;
+            // Caller's name
+            var colName = document.createElement("div");
+            colName.innerHTML = caller.name;
 
-            // split pledges in groups of 6
-            // each put into a row
-            // var sortedPledges = caller.pledges.sort(comparePledge);
-            var sortedPledges = caller.pledges;
-            var countRows = Math.floor(sortedPledges.length / 6);
-            for (var i = 0; i <= countRows; i++) {
-                // wrapping elements
-                var colPlgs = document.createElement("div");
-                colPlgs.className = CLS_PLEDGES;
-                var rowPlgs = document.createElement("div");
-                rowPlgs.className = "row";
+            // Pledges' outer row
+            var colPledges = document.createElement("div");
 
-                // pledges
-                var plgs = sortedPledges.slice(i * 6, (i + 1) * 6);
-                plgs.forEach(element => {
-                    rowPlgs.appendChild(toHtml(element));
-                });
-                colPlgs.appendChild(rowPlgs);
-                colPledges.appendChild(colPlgs);
+            // Pledges
+            if (caller.pledges.length === 0) {
+                // no pledges, just output caller name
+                colName.className = CLS_NAME_ONLY;
+                row.appendChild(colName);
+            }
+            else {
+                colName.className = CLS_NAME_WITH_PL;
+                colPledges.className = CLS_PLEDGES_WITH_PL;
+
+                // split pledges in groups of 6
+                // each put into a row
+                // var sortedPledges = caller.pledges.sort(comparePledge);
+                var sortedPledges = caller.pledges;
+                var countRows = Math.floor(sortedPledges.length / 6);
+                for (var i = 0; i <= countRows; i++) {
+                    // wrapping elements
+                    var colPlgs = document.createElement("div");
+                    colPlgs.className = CLS_PLEDGES;
+                    var rowPlgs = document.createElement("div");
+                    rowPlgs.className = "row";
+
+                    // pledges
+                    var plgs = sortedPledges.slice(i * 6, (i + 1) * 6);
+                    plgs.forEach(element => {
+                        rowPlgs.appendChild(toHtml(element));
+                    });
+                    colPlgs.appendChild(rowPlgs);
+                    colPledges.appendChild(colPlgs);
+                }
+
+                row.appendChild(colName);
+                row.appendChild(colPledges);
             }
 
-            row.appendChild(colName);
-            row.appendChild(colPledges);
-        }
-
-        document.getElementById("main-div").appendChild(row);
-    });
+            document.getElementById("main-div").appendChild(row);
+        });
+    }
 }
 
 function toHtml(pledge) {

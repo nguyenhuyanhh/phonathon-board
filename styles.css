@@ -43,6 +43,9 @@ body {
     padding-left: 50px;
     padding-right: 50px;
 }
+.maint {
+    text-align: center;
+}
 
 /* Styles for footer */
 #footer {
