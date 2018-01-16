@@ -44,10 +44,9 @@ Caller.prototype = {
     },
     pledgeToStr: function () {
         // String representation of pledge list
-        // uses Pledge.toShortStr()
         var plgs = [];
         this.pledges.forEach(element => {
-            plgs.push(element.toShortStr());
+            plgs.push(element.toStr());
         });
         return plgs.join(",")
     },
@@ -97,12 +96,7 @@ function Pledge(amount, type) {
 Pledge.prototype = {
     constructor: Pledge,
     toStr: function () {
-        // Full string representation of a Pledge object
-        // e.g. $50 Pledge
-        return ("$" + this.amount + " " + TYPES[this.type]);
-    },
-    toShortStr: function () {
-        // Short string representation of a Pledge object
+        // String representation of a Pledge object
         // e.g. (P)50
         return ("(" + TYPES_SHORT[this.type] + ")" + this.amount)
     }
