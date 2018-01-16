@@ -220,7 +220,6 @@ function output() {
             // each put into a row
             // var sortedPledges = caller.pledges.sort(comparePledge);
             var sortedPledges = caller.pledges;
-            console.log(sortedPledges);
             var countRows = Math.floor(sortedPledges.length / 6);
             for (var i = 0; i <= countRows; i++) {
                 // wrapping elements
