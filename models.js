@@ -3,8 +3,7 @@
 const TYPE_PL = 1; // pledge
 const TYPE_CC = 2; // credit card
 const TYPE_GR = 3; // GIRO
-const TYPES = { 1: "Pledge", 2: "Credit Card", 3: "GIRO" };
-const TYPES_SHORT = { 1: "P", 2: "C", 3: "G" };
+const TYPES = { 1: "P", 2: "C", 3: "G" };
 
 function Caller(name) {
     // define a Caller
@@ -22,25 +21,19 @@ Caller.prototype = {
         this.pledgeCount++;
         this.pledgeCounts[pledge.type]++; // update the count
     },
-    pledgeToStr: function () {
-        // String representation of pledge list
+    toStr: function () {
+        // String representation of the Caller object
+        // e.g. Caller X getting 1 pledges, 1 credits, 1 GIROs: (P)100,(C)50,(G)10
         var plgs = [];
         this.pledges.forEach(element => {
             plgs.push(element.toStr());
         });
-        return plgs.join(",")
-    },
-    pledgeCountToStr: function () {
-        // String representation of pledge counts
-        countPl = this.pledgeCounts[TYPE_PL];
-        countCc = this.pledgeCounts[TYPE_CC];
-        countGr = this.pledgeCounts[TYPE_GR];
-        return (countPl + " pledges, " + countCc + " credits, " + countGr + " GIROs: ");
-    },
-    toStr: function () {
-        // String representation of the Caller object
-        // e.g. Caller X getting (P)100,(C)50,(G)10
-        return ("Caller " + this.name + " getting " + this.pledgeCountToStr() + this.pledgeToStr());
+        if (plgs.length) {
+            return ("Caller " + this.name + " getting " + this.pledgeCounts[TYPE_PL] + " pledges, " + this.pledgeCounts[TYPE_CC] + " credits, " + this.pledgeCounts[TYPE_GR] + " GIROs: " + plgs.join(","));
+        }
+        else {
+            return ("Caller " + this.name + " gets no pledge");
+        }
     }
 }
 
@@ -79,40 +72,28 @@ Pledge.prototype = {
     toStr: function () {
         // String representation of a Pledge object
         // e.g. (P)50
-        return ("(" + TYPES_SHORT[this.type] + ")" + this.amount)
+        return ("(" + TYPES[this.type] + ")" + this.amount)
     }
 }
 
 function comparePledgeAmount(pledge1, pledge2) {
     // compare pledges based on type, then amount
-    if (pledge1.type < pledge2.type) {
-        return -1;
+    if (pledge1.type != pledge2.type) {
+        return pledge1.type - pledge2.type;
     }
-    if (pledge1.type > pledge2.type) {
-        return 1;
-    }
-    if (pledge1.amount < pledge2.amount) {
-        return -1;
-    }
-    if (pledge1.amount > pledge2.amount) {
-        return 1;
+    if (pledge1.amount != pledge2.amount) {
+        return pledge1.amount - pledge2.amount;
     }
     return 0;
 }
 
 function comparePledgeOrder(pledge1, pledge2) {
     // compare pledges based on type, then sort order
-    if (pledge1.type < pledge2.type) {
-        return -1;
+    if (pledge1.type != pledge2.type) {
+        return pledge1.type - pledge2.type;
     }
-    if (pledge1.type > pledge2.type) {
-        return 1;
-    }
-    if (pledge1.sortOrder < pledge2.sortOrder) {
-        return -1;
-    }
-    if (pledge1.sortOrder > pledge2.sortOrder) {
-        return 1;
+    if (pledge1.sortOrder != pledge2.sortOrder) {
+        return pledge1.sortOrder - pledge2.sortOrder;
     }
     return 0;
 }
