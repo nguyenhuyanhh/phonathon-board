@@ -11,24 +11,20 @@
     <script src='vendored/js/fontawesome.min.js'></script>
     <script src='models.js'></script>
     <script src='script.js'></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendored/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-fixed-top navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Phonathon Updates</a>
-                <p class="navbar-text" id="clock"></p>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" id="refresh" onclick="manualRefresh();">
-                        <span class="fas fa-sync-alt"></span> Refresh</a>
-                </li>
-            </ul>
-        </div>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Phonathon Updates</a>
+        <span class="navbar-text" id="clock"></span>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#" id="refresh" onclick="manualRefresh();">
+                    <span class="fas fa-sync-alt"></span> Refresh</a>
+            </li>
+        </ul>
     </nav>
 
     <div class="container-fluid container-main">
@@ -37,14 +33,12 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-fixed-bottom navbar-inverse">
-        <div class="container-fluid" id="footer">
-            <p class="navbar-text">Made with
-                <i class="fas fa-heart" aria-hidden="true"></i> using
-                <a href="https://github.com/jsoma/tabletop" target="_blank">Tabletop</a> and
-                <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>. Source code is on
-                <a href="https://github.com/nguyenhuyanhh/phonathon-board" target="_blank">GitHub</a>.</p>
-        </div>
+    <nav class="navbar navbar-dark bg-dark fixed-bottom">
+        <span class="navbar-text" id="footer">Made with
+            <i class="fas fa-heart" aria-hidden="true"></i> using
+            <a href="https://github.com/jsoma/tabletop" target="_blank">Tabletop</a> and
+            <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>. Source code is on
+            <a href="https://github.com/nguyenhuyanhh/phonathon-board" target="_blank">GitHub</a>.</span>
     </nav>
 
 </body>
