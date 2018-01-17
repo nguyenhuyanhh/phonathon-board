@@ -64,7 +64,7 @@ body {
     text-decoration: none;
     color: white;
 }
-#footer p i.fa-heart {
+#footer .fa-heart {
     color: red;
 }
 
