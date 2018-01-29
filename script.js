@@ -92,14 +92,14 @@ function process(data, tabletop) {
 }
 
 // Style constant for one-column layout for name only
-const CLS_NAME_ONLY = "col-caller col-xs-3 col-sm-3 col-md-2 col-lg-1 col-xs-offset-right-9 col-sm-offset-right-9 col-md-offset-right-10 col-lg-offset-right-11";
+const CLS_NAME_ONLY = "col-caller col-3 col-lg-2 col-offset-right-9 col-lg-offset-right-10";
 // Style constants for two-column layout for name-pledges
-const CLS_NAME_WITH_PL = "col-caller col-xs-3 col-sm-3 col-md-2 col-lg-1";
-const CLS_PLEDGES_WITH_PL = "col-xs-9 col-sm-9 col-md-10 col-lg-11";
-// 6-12-18-24 pledges on a line depending on screen size
-const CLS_PLEDGES = "container-fluid col-xs-12 col-sm-6 col-md-4 col-lg-3";
+const CLS_NAME_WITH_PL = "col-caller col-3 col-lg-2";
+const CLS_PLEDGES_WITH_PL = "col-9 col-lg-10 row";
+// 6-12-18 pledges on a line depending on screen size
+const CLS_PLEDGES = "col-12 col-md-6 col-lg-4 col-xl-3";
 // Style constant for a single pledge
-const CLS_PLDG = "col-pledge col-xs-2 col-sm-2 col-md-2 col-lg-2";
+const CLS_PLDG = "col-pledge col-2";
 
 function output(config) {
     if (config.maintenance == '1') {
