@@ -1,29 +1,8 @@
-const REFRESH_INTERVAL = 30000; // 30 seconds
-const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 30
-var clk = CLOCK_SIGNAL;
-
-// Clock for cosmetic reasons
-
-function resetClk() {
-    clk = CLOCK_SIGNAL;
-}
-
-function clock() {
-    document.getElementById("clock").textContent = "Refreshing in " + clk + "...";
-    if (clk == 1) {
-        resetClk();
-    } else {
-        clk--;
-    }
-}
-setInterval(clock, 1000);
-
-// Spreadsheet processing
-
 var publicSpreadsheetUrl = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 var callers = [];
 
 function loadBoard() {
+    // load the spreadsheet using Tabletop
     console.log("Refreshing data from spreadsheet.")
     callers = [];
     Tabletop.init({
@@ -102,6 +81,26 @@ const CLS_PLEDGES = "col-12 col-md-6 col-lg-4 col-xl-3";
 const CLS_PLDG = "col-pledge col-2";
 
 function output(config) {
+
+    function toHtml(pledge) {
+        // return HTML div of a pledge
+        var div = document.createElement("div");
+        div.className = CLS_PLDG;
+        var subdiv = document.createElement("div");
+        subdiv.innerHTML = pledge.amount;
+        if (pledge.type == TYPE_PL) {
+            subdiv.className = "col-pldg col-pl";
+        }
+        if (pledge.type == TYPE_CC) {
+            subdiv.className = "col-pldg col-cc";
+        }
+        if (pledge.type == TYPE_GR) {
+            subdiv.className = "col-pldg col-gr";
+        }
+        div.appendChild(subdiv);
+        return div
+    }
+
     if (config.maintenance == '1') {
         // Render maintenance site
         var maintDiv = document.createElement("div");
@@ -171,33 +170,29 @@ function output(config) {
     }
 }
 
-function toHtml(pledge) {
-    // return HTML div of a pledge
-    var div = document.createElement("div");
-    div.className = CLS_PLDG;
-    var subdiv = document.createElement("div");
-    subdiv.innerHTML = pledge.amount;
-    if (pledge.type == TYPE_PL) {
-        subdiv.className = "col-pldg col-pl";
-    }
-    if (pledge.type == TYPE_CC) {
-        subdiv.className = "col-pldg col-cc";
-    }
-    if (pledge.type == TYPE_GR) {
-        subdiv.className = "col-pldg col-gr";
-    }
-    div.appendChild(subdiv);
-    return div
-}
+const REFRESH_INTERVAL = 30000; // 30 seconds
+const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 30
+var clk = CLOCK_SIGNAL;
 
 // Auto-refresh
 window.addEventListener('DOMContentLoaded', loadBoard);
 var id = setInterval(loadBoard, REFRESH_INTERVAL);
 
-// Manual refresh
+function clock() {
+    // Auto-refresh timer
+    document.getElementById("clock").textContent = "Refreshing in " + clk + "...";
+    if (clk == 1) {
+        clk = CLOCK_SIGNAL; // reset clock
+    } else {
+        clk--;
+    }
+}
+setInterval(clock, 1000);
+
 function manualRefresh() {
+    // Manual refresh
     clearInterval(id);
-    resetClk();
+    clk = CLOCK_SIGNAL;
     loadBoard();
     id = setInterval(loadBoard, REFRESH_INTERVAL);
 }
