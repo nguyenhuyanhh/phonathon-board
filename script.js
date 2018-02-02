@@ -170,8 +170,8 @@ function output(config) {
     }
 }
 
-const REFRESH_INTERVAL = 30000; // 30 seconds
-const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 30
+const REFRESH_INTERVAL = 15000; // 15 seconds
+const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 15
 var clk = CLOCK_SIGNAL;
 
 // Auto-refresh
