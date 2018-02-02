@@ -1,10 +1,10 @@
 var publicSpreadsheetUrl = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
-var callers = [];
+var board = new Board();
 
 function loadBoard() {
     // load the spreadsheet using Tabletop
-    console.log("Refreshing data from spreadsheet.")
-    callers = [];
+    console.log("Refreshing data from spreadsheet.");
+    board.clear();
     Tabletop.init({
         key: publicSpreadsheetUrl,
         callback: process,
@@ -59,7 +59,7 @@ function process(data, tabletop) {
         if (data[i].GIRO) {
             pledgesFromStr(caller, data[i].GIRO, TYPE_GR, settings.special_mode);
         };
-        callers.push(caller);
+        board.callers.push(caller);
     }
 
     // output
@@ -110,8 +110,8 @@ function output(config) {
     }
     else {
         // HTML representation of the data
-        callers = callers.sort(compareCaller).reverse(); // sort callers
-        callers.forEach(caller => {
+        board.sort();
+        board.callers.forEach(caller => {
             // Log output to compare with visual output later
             console.log(caller.toStr());
 

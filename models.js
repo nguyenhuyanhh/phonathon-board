@@ -97,3 +97,19 @@ function comparePledgeOrder(pledge1, pledge2) {
     }
     return 0;
 }
+
+function Board() {
+    this.callers = [];
+}
+
+Board.prototype = {
+    constructor: Board,
+    clear: function () {
+        if (this.callers) {
+            this.callers = [];
+        }
+    },
+    sort: function () {
+        this.callers.sort(compareCaller).reverse();
+    }
+}
