@@ -38,9 +38,15 @@ body {
 .maint {
     text-align: center;
 }
-#main-div {
+#main-div, #summary {
     margin-left: 15px;
     margin-right: 15px;
+}
+.col-summary {
+    height: 48px;
+    line-height: 48px;
+    font-size: 1.2rem;
+    text-align: center;
 }
 
 /* Styles for footer */

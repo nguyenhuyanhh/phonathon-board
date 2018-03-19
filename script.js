@@ -110,10 +110,16 @@ function output(config) {
     }
     else {
         // HTML representation of the data
+        var totalAmount = { 1: 0, 2: 0, 3: 0 }
         board.sort();
         board.callers.forEach(caller => {
             // Log output to compare with visual output later
             console.log(caller.toStr());
+
+            // Calculate the total pledge amount of the whole board
+            for (var i = 0; i <= 2; i++) {
+                totalAmount[i] += caller.pledgeAmounts[i];
+            }
 
             // Caller's outer row
             var row = document.createElement("div");
@@ -167,6 +173,9 @@ function output(config) {
 
             document.getElementById("main-div").appendChild(row);
         });
+
+        // Display the total
+        document.getElementById("summary").textContent = "Total Pledges: $" + totalAmount[1] + " | Total Credit Cards: $" + totalAmount[2] + " | Total GIROs: $" + totalAmount[3]
     }
 }
 

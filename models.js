@@ -11,6 +11,7 @@ function Caller(name) {
     this.pledges = [];
     this.pledgeCount = 0;
     this.pledgeCounts = { 1: 0, 2: 0, 3: 0 };
+    this.pledgeAmounts = { 1: 0, 2: 0, 3: 0 };
 }
 
 Caller.prototype = {
@@ -19,7 +20,9 @@ Caller.prototype = {
         // Add a pledge to the caller's pledges
         this.pledges.push(pledge);
         this.pledgeCount++;
-        this.pledgeCounts[pledge.type]++; // update the count
+        // update the count and amount
+        this.pledgeCounts[pledge.type]++;
+        this.pledgeAmounts[pledge.type] += pledge.amount;
     },
     toStr: function () {
         // String representation of the Caller object
