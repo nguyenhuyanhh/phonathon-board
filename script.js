@@ -117,7 +117,7 @@ function output(config) {
             console.log(caller.toStr());
 
             // Calculate the total pledge amount of the whole board
-            for (var i = 0; i <= 2; i++) {
+            for (var i = 1; i <= 3; i++) {
                 totalAmount[i] += caller.pledgeAmounts[i];
             }
 
