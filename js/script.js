@@ -1,3 +1,5 @@
+"use strict";
+
 var publicSpreadsheetUrl = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 var board = new Board();
 
@@ -8,15 +10,15 @@ function loadBoard() {
     Tabletop.init({
         key: publicSpreadsheetUrl,
         callback: process,
-    })
+    });
 }
 
 function pledgesFromStr(caller, str, type, special) {
     // get the pledges from a str, add to a Caller
     var order = 0;
-    var pledges = str.split(',');
+    var pledges = str.split(",");
     pledges.forEach(element => {
-        if (special == '1') {
+        if (special == "1") {
             caller.addPledge(new Pledge(element, type, order));
         }
         else {
@@ -34,13 +36,13 @@ function process(data, tabletop) {
     var settings = tabletop.sheets("Settings").all()[0];
 
     // log the settings
-    if (settings.special_mode == '1') {
+    if (settings.special_mode == "1") {
         console.log("Special mode is on.");
     }
-    if (settings.maintenance == '1') {
+    if (settings.maintenance == "1") {
         console.log("Maintenance mode is on.");
     }
-    if (settings.manual_refresh == '1') {
+    if (settings.manual_refresh == "1") {
         console.log("Auto-refresh is off.");
     }
 
@@ -52,13 +54,13 @@ function process(data, tabletop) {
         // get pledges
         if (data[i].Pledge) {
             pledgesFromStr(caller, data[i].Pledge, TYPE_PL, settings.special_mode);
-        };
+        }
         if (data[i].CC) {
             pledgesFromStr(caller, data[i].CC, TYPE_CC, settings.special_mode);
-        };
+        }
         if (data[i].GIRO) {
             pledgesFromStr(caller, data[i].GIRO, TYPE_GR, settings.special_mode);
-        };
+        }
         board.callers.push(caller);
     }
 
@@ -98,10 +100,10 @@ function output(config) {
             subdiv.className = "col-pldg col-gr";
         }
         div.appendChild(subdiv);
-        return div
+        return div;
     }
 
-    if (config.maintenance == '1') {
+    if (config.maintenance == "1") {
         // Render maintenance site
         var maintDiv = document.createElement("div");
         maintDiv.innerHTML = "The site is under maintenance, please come back later!";
@@ -110,7 +112,7 @@ function output(config) {
     }
     else {
         // HTML representation of the data
-        var totalAmount = { 1: 0, 2: 0, 3: 0 }
+        var totalAmount = { 1: 0, 2: 0, 3: 0 };
         board.sort();
         board.callers.forEach(caller => {
             // Log output to compare with visual output later
@@ -144,14 +146,14 @@ function output(config) {
 
                 // split pledges in groups of 6
                 // each put into a row
-                if (config.special_mode == '1') {
+                if (config.special_mode == "1") {
                     var sortedPledges = caller.pledges.sort(comparePledgeOrder);
                 }
                 else {
-                    var sortedPledges = caller.pledges.sort(comparePledgeAmount);
+                    sortedPledges = caller.pledges.sort(comparePledgeAmount);
                 }
                 var countRows = Math.floor(sortedPledges.length / 6);
-                for (var i = 0; i <= countRows; i++) {
+                for (i = 0; i <= countRows; i++) {
                     // wrapping elements
                     var colPlgs = document.createElement("div");
                     colPlgs.className = CLS_PLEDGES;
@@ -175,7 +177,7 @@ function output(config) {
         });
 
         // Display the total
-        document.getElementById("summary").textContent = "Total Pledges: $" + totalAmount[1] + " | Total Credit Cards: $" + totalAmount[2] + " | Total GIROs: $" + totalAmount[3]
+        document.getElementById("summary").textContent = "Total Pledges: $" + totalAmount[1] + " | Total Credit Cards: $" + totalAmount[2] + " | Total GIROs: $" + totalAmount[3];
     }
 }
 
@@ -184,7 +186,7 @@ const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 15
 var clk = CLOCK_SIGNAL;
 
 // Auto-refresh
-window.addEventListener('DOMContentLoaded', loadBoard);
+window.addEventListener("DOMContentLoaded", loadBoard);
 var id = setInterval(loadBoard, REFRESH_INTERVAL);
 
 function clock() {
@@ -205,3 +207,5 @@ function manualRefresh() {
     loadBoard();
     id = setInterval(loadBoard, REFRESH_INTERVAL);
 }
+
+document.getElementById("button-refresh").onclick = manualRefresh;

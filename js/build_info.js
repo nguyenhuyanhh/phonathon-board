@@ -1,3 +1,5 @@
+"use strict";
+
 function getBuildInfo() {
     // Counting GitHub commits - get the diff between
     // latest and initial commits, then plus 1
@@ -20,7 +22,7 @@ function getBuildInfo() {
             buildRequest.open("GET", "https://api.github.com/repos/nguyenhuyanhh/phonathon-board/compare/" + initSHA + "..." + latestSHA, true);
             buildRequest.send();
         }
-    }
+    };
 
     // Parse build number
     buildRequest.onreadystatechange = function () {
@@ -30,7 +32,7 @@ function getBuildInfo() {
             console.log("Current build: " + buildNo);
             document.getElementById("build").innerHTML = "v" + buildNo;
         }
-    }
+    };
 }
 
 window.addEventListener("DOMContentLoaded", getBuildInfo);

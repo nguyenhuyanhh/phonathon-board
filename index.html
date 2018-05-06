@@ -9,9 +9,6 @@
     <script src='vendored/js/tabletop.min.js'></script>
     <script defer src='vendored/js/fa-solid.min.js'></script>
     <script src='vendored/js/fontawesome.min.js'></script>
-    <script src='js/models.js'></script>
-    <script src='js/script.js'></script>
-    <script src='js/build_info.js'></script>
     <link rel="stylesheet" href="vendored/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
@@ -21,18 +18,18 @@
         <a class="navbar-brand" href="#">Phonathon Updates</a>
         <span class="navbar-text" id="clock"></span>
         <ul class="navbar-nav">
-            <button type="button" class="btn btn-primary" onclick="manualRefresh();">Refresh</button>
+            <button type="button" class="btn btn-primary" id="button-refresh">Refresh</button>
         </ul>
     </nav>
-
+    
     <div class="container-fluid">
         <div class="row">
             <div class="col col-summary" id="summary"></div>
         </div>
     </div>
-
+    
     <div class="container-fluid" id="main-div"></div>
-
+    
     <nav class="navbar navbar-dark bg-dark fixed-bottom">
         <span class="navbar-text" id="footer">Made with
             <i class="fas fa-heart" aria-hidden="true"></i> using
@@ -43,6 +40,9 @@
             <span id="build"></span>).
         </span>
     </nav>
+    <script src='js/models.js'></script>
+    <script src='js/script.js'></script>
+    <script src='js/build_info.js'></script>
 </body>
 
 </html>

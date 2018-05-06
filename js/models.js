@@ -1,3 +1,7 @@
+"use strict";
+
+/* exported Caller, Board, Pledge, comparePledgeAmount, comparePledgeOrder */
+
 // Object definitions
 
 const TYPE_PL = 1; // pledge
@@ -5,26 +9,26 @@ const TYPE_CC = 2; // credit card
 const TYPE_GR = 3; // GIRO
 const TYPES = { 1: "P", 2: "C", 3: "G" };
 
-function Caller(name) {
-    // define a Caller
-    this.name = name;
-    this.pledges = [];
-    this.pledgeCount = 0;
-    this.pledgeCounts = { 1: 0, 2: 0, 3: 0 };
-    this.pledgeAmounts = { 1: 0, 2: 0, 3: 0 };
-}
+class Caller {
+    constructor(name) {
+        // define a Caller
+        this.name = name;
+        this.pledges = [];
+        this.pledgeCount = 0;
+        this.pledgeCounts = { 1: 0, 2: 0, 3: 0 };
+        this.pledgeAmounts = { 1: 0, 2: 0, 3: 0 };
+    }
 
-Caller.prototype = {
-    constructor: Caller,
-    addPledge: function (pledge) {
+    addPledge (pledge) {
         // Add a pledge to the caller's pledges
         this.pledges.push(pledge);
         this.pledgeCount++;
         // update the count and amount
         this.pledgeCounts[pledge.type]++;
         this.pledgeAmounts[pledge.type] += pledge.amount;
-    },
-    toStr: function () {
+    }
+
+    toStr () {
         // String representation of the Caller object
         // e.g. Caller X getting 1 pledges, 1 credits, 1 GIROs: (P)100,(C)50,(G)10
         var plgs = [];
@@ -63,19 +67,18 @@ function compareCaller(caller1, caller2) {
     return 0;
 }
 
-function Pledge(amount, type, sortOrder) {
-    // define a Pledge
-    this.amount = amount;
-    this.type = type;
-    this.sortOrder = sortOrder;
-}
+class Pledge {
+    constructor(amount, type, sortOrder) {
+        // define a Pledge
+        this.amount = amount;
+        this.type = type;
+        this.sortOrder = sortOrder;
+    }
 
-Pledge.prototype = {
-    constructor: Pledge,
-    toStr: function () {
+    toStr () {
         // String representation of a Pledge object
         // e.g. (P)50
-        return ("(" + TYPES[this.type] + ")" + this.amount)
+        return ("(" + TYPES[this.type] + ")" + this.amount);
     }
 }
 
@@ -101,18 +104,18 @@ function comparePledgeOrder(pledge1, pledge2) {
     return 0;
 }
 
-function Board() {
-    this.callers = [];
-}
+class Board {
+    constructor() {
+        this.callers = [];
+    }
 
-Board.prototype = {
-    constructor: Board,
-    clear: function () {
+    clear () {
         if (this.callers) {
             this.callers = [];
         }
-    },
-    sort: function () {
+    }
+
+    sort () {
         this.callers.sort(compareCaller).reverse();
     }
 }
