@@ -30,7 +30,7 @@ function getBuildInfo() {
             var response = JSON.parse(buildRequest.responseText);
             var buildNo = response["total_commits"] + 1;
             console.log("Current build: " + buildNo);
-            document.getElementById("build").innerHTML = "v" + buildNo;
+            document.getElementById("build").innerHTML = buildNo;
         }
     };
 }
