@@ -5,7 +5,7 @@ var board = new Board();
 
 function load() {
     // load the spreadsheet using Tabletop
-    console.log("Refreshing data from spreadsheet.");
+    console.debug("Refreshing data from spreadsheet.");
     board.clear();
     Tabletop.init({
         key: URL,
@@ -37,13 +37,13 @@ function process(data, tabletop) {
 
     // log the settings
     if (settings.special_mode == "1") {
-        console.log("Special mode is on.");
+        console.debug("Special mode is on.");
     }
     if (settings.maintenance == "1") {
-        console.log("Maintenance mode is on.");
+        console.debug("Maintenance mode is on.");
     }
     if (settings.manual_refresh == "1") {
-        console.log("Auto-refresh is off.");
+        console.debug("Auto-refresh is off.");
     }
 
     // process the spreadsheet
@@ -116,7 +116,7 @@ function output(config) {
         board.sort();
         board.callers.forEach(caller => {
             // Log output to compare with visual output later
-            console.log(caller.toStr());
+            console.debug(caller.toStr());
 
             // Calculate the total pledge amount of the whole board
             for (var i = 1; i <= 3; i++) {

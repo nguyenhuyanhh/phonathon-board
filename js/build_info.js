@@ -16,7 +16,7 @@ function getBuildInfo() {
         if (this.readyState == 4 && this.status == 200) {
             var response = JSON.parse(latestRequest.responseText);
             var latestSHA = response["object"]["sha"];
-            console.log("Latest commit: " + latestSHA);
+            console.debug("Latest commit: " + latestSHA);
 
             // Request build number
             buildRequest.open("GET", "https://api.github.com/repos/nguyenhuyanhh/phonathon-board/compare/" + initSHA + "..." + latestSHA, true);
@@ -29,7 +29,7 @@ function getBuildInfo() {
         if (this.readyState == 4 && this.status == 200) {
             var response = JSON.parse(buildRequest.responseText);
             var buildNo = response["total_commits"] + 1;
-            console.log("Current build: " + buildNo);
+            console.debug("Current build: " + buildNo);
             document.getElementById("build").innerHTML = buildNo;
         }
     };
