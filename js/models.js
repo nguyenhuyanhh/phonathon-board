@@ -1,6 +1,6 @@
 "use strict";
 
-/* exported Caller, Board, Pledge, comparePledgeAmount, comparePledgeOrder */
+/* exported Board, BoardCaller, BoardPledge, comparePledgeAmount, comparePledgeOrder */
 
 // Object definitions
 
@@ -9,21 +9,25 @@ const TYPE_CC = 2; // credit card
 const TYPE_GR = 3; // GIRO
 const TYPES = { 1: "P", 2: "C", 3: "G" };
 
-class Caller {
-    constructor(name) {
+class BoardCaller {
+    constructor (name) {
         // define a Caller
         this.name = name;
+        // array of BoardPledge objects
         this.pledges = [];
+        // total number of pledges
         this.pledgeCount = 0;
+        // number of pledges of each type
         this.pledgeCounts = { 1: 0, 2: 0, 3: 0 };
+        // total amount of pledges of each type
         this.pledgeAmounts = { 1: 0, 2: 0, 3: 0 };
     }
 
     addPledge (pledge) {
         // Add a pledge to the caller's pledges
         this.pledges.push(pledge);
-        this.pledgeCount++;
         // update the count and amount
+        this.pledgeCount++;
         this.pledgeCounts[pledge.type]++;
         this.pledgeAmounts[pledge.type] += pledge.amount;
     }
@@ -67,11 +71,13 @@ function compareCaller(caller1, caller2) {
     return 0;
 }
 
-class Pledge {
-    constructor(amount, type, sortOrder) {
+class BoardPledge {
+    constructor (amount, type, sortOrder) {
         // define a Pledge
         this.amount = amount;
+        // pledge type
         this.type = type;
+        // pledge sort order
         this.sortOrder = sortOrder;
     }
 
@@ -105,17 +111,20 @@ function comparePledgeOrder(pledge1, pledge2) {
 }
 
 class Board {
-    constructor() {
+    constructor () {
+        // array of BoardCaller objects
         this.callers = [];
     }
 
     clear () {
+        // Clear the board
         if (this.callers) {
             this.callers = [];
         }
     }
 
     sort () {
+        // Sort callers in descending order
         this.callers.sort(compareCaller).reverse();
     }
 }

@@ -1,14 +1,14 @@
 "use strict";
 
-var publicSpreadsheetUrl = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
+const URL = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 var board = new Board();
 
-function loadBoard() {
+function load() {
     // load the spreadsheet using Tabletop
     console.log("Refreshing data from spreadsheet.");
     board.clear();
     Tabletop.init({
-        key: publicSpreadsheetUrl,
+        key: URL,
         callback: process,
     });
 }
@@ -19,11 +19,11 @@ function pledgesFromStr(caller, str, type, special) {
     var pledges = str.split(",");
     pledges.forEach(element => {
         if (special == "1") {
-            caller.addPledge(new Pledge(element, type, order));
+            caller.addPledge(new BoardPledge(element, type, order));
         }
         else {
             if (!isNaN(element)) {
-                caller.addPledge(new Pledge(parseInt(element), type, order));
+                caller.addPledge(new BoardPledge(parseInt(element), type, order));
             }
         }
         order++;
@@ -49,7 +49,7 @@ function process(data, tabletop) {
     // process the spreadsheet
     for (var i = 0; i < data.length; i++) {
         // get caller
-        var caller = new Caller(data[i].Caller);
+        var caller = new BoardCaller(data[i].Caller);
 
         // get pledges
         if (data[i].Pledge) {
@@ -186,8 +186,8 @@ const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 15
 var clk = CLOCK_SIGNAL;
 
 // Auto-refresh
-window.addEventListener("DOMContentLoaded", loadBoard);
-var id = setInterval(loadBoard, REFRESH_INTERVAL);
+window.addEventListener("DOMContentLoaded", load);
+var id = setInterval(load, REFRESH_INTERVAL);
 
 function clock() {
     // Auto-refresh timer
@@ -204,8 +204,8 @@ function manualRefresh() {
     // Manual refresh
     clearInterval(id);
     clk = CLOCK_SIGNAL;
-    loadBoard();
-    id = setInterval(loadBoard, REFRESH_INTERVAL);
+    load();
+    id = setInterval(load, REFRESH_INTERVAL);
 }
 
 document.getElementById("button-refresh").onclick = manualRefresh;
