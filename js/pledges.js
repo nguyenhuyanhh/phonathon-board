@@ -18,10 +18,12 @@ function pledgesFromStr(caller, str, type, special) {
     var order = 0;
     var pledges = str.split(",");
     pledges.forEach(element => {
-        if (special == "1") {
+        if (special) {
+            // special mode: pledge "amount" could be anything
             caller.addPledge(new BoardPledge(element, type, order));
         }
         else {
+            // normal mode: pledges must be valid
             if (!isNaN(element)) {
                 caller.addPledge(new BoardPledge(parseInt(element), type, order));
             }
@@ -33,9 +35,9 @@ function pledgesFromStr(caller, str, type, special) {
 function parseSettings(data) {
     // Parse setting from sheet "Settings"
     var settings = {};
-    settings.special_mode = (data.special_mode == "1") ? true : false;
-    settings.maintenance = (data.maintenance == "1") ? true : false;
-    settings.manual_refresh = (data.manual_refresh == "1") ? true : false;
+    settings.special_mode = (data.special_mode == "0") ? false : true;
+    settings.maintenance = (data.maintenance == "0") ? false : true;
+    settings.manual_refresh = (data.manual_refresh == "0") ? false : true;
     return settings;
 }
 
@@ -191,6 +193,7 @@ var clk = CLOCK_SIGNAL;
 // Auto-refresh
 window.addEventListener("DOMContentLoaded", loadBoard);
 var id = setInterval(loadBoard, REFRESH_INTERVAL);
+setInterval(clock, 1000);
 
 function clock() {
     // Auto-refresh timer
@@ -201,7 +204,6 @@ function clock() {
         clk--;
     }
 }
-setInterval(clock, 1000);
 
 function manualRefresh() {
     // Manual refresh
