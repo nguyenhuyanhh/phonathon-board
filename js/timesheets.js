@@ -25,54 +25,69 @@ function parseCallers(data) {
 
 function parseTimesheets(data, shifts) {
     // Parse timesheets from sheet "Timesheets"
-    var lookup = {};
     // Initialize lookup with shifts
+    var lookup = {};
     shifts.forEach(shift => {
         lookup[shift] = { "callers": [] };
     });
+
     // First row: supervisors
     var sups = data[0];
-    for (var s in sups) {
+    for (var key in sups) {
+        var value = sups[key];
         try {
-            if (sups[s] == "Supervisor") {
+            if (value == "Supervisor") {
+                // first column, don't care
                 continue;
             }
-            if (sheet.callers.hasOwnProperty(sups[s])) {
-                lookup[s]["supervisor"] = sheet.callers[sups[s]];
+            // check whether cell value is a valid supervisor
+            if (sheet.callers.hasOwnProperty(value)) {
+                var sup = sheet.callers[value];
+                if (sup.role == "Supervisor") {
+                    lookup[key]["supervisor"] = sheet.callers[value];
+                } else {
+                    throw value + " is not a supervisor";
+                }
             } else {
-                throw "Caller " + sups[s] + " not available";
+                throw value + " is not a caller";
             }
         } catch (error) {
             console.error(error);
         }
     }
+
     // Remaining rows
     for (var i = 1; i < data.length; i++) {
         var row = data[i];
-        for (var c in row) {
+        for (key in row) {
+            value = row[key];
             try {
-                if (!row[c]) {
+                if (!value) {
+                    // empty cell
                     continue;
                 }
-                if (sheet.callers.hasOwnProperty(row[c])) {
-                    lookup[c]["callers"].push(sheet.callers[row[c]]);
+                // check whether cell value is a valid caller
+                if (sheet.callers.hasOwnProperty(value)) {
+                    lookup[key]["callers"].push(sheet.callers[value]);
                 } else {
-                    throw "Caller " + row[c] + " not available";
+                    throw value + "is not a caller";
                 }
             } catch (error) {
                 console.error(error);
             }
         }
     }
+
     // Create SheetShift objects
-    for (var l in lookup) {
-        if (lookup[l].hasOwnProperty("supervisor")) {
-            var supervisor = lookup[l]["supervisor"];
+    for (key in lookup) {
+        value = lookup[key];
+        if (value.hasOwnProperty("supervisor")) {
+            var supervisor = value["supervisor"];
         } else {
             supervisor = false;
         }
-        var shift = new SheetShift(l, supervisor, lookup[l]["callers"]);
-        sheet.shifts[l] = shift;
+        var shift = new SheetShift(key, supervisor, value["callers"]);
+        sheet.shifts[key] = shift;
     }
 }
 
