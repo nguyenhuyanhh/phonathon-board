@@ -1,12 +1,13 @@
 "use strict";
 
-/* exported Board, BoardCaller, BoardPledge, comparePledgeAmount, comparePledgeOrder, Sheet, SheetCaller, URL, TYPE_PL, TYPE_CC, TYPE_GR */
+/* exported Board, BoardCaller, BoardPledge, comparePledgeAmount, comparePledgeOrder, Sheet, SheetCaller, SheetShift, URL, TYPE_PL, TYPE_CC, TYPE_GR */
 
 const URL = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 const TYPE_PL = 1; // pledge
 const TYPE_CC = 2; // credit card
 const TYPE_GR = 3; // GIRO
 const TYPES = { 1: "P", 2: "C", 3: "G" };
+const year = (new Date()).getFullYear();
 
 class BoardCaller {
     constructor(name) {
@@ -139,16 +140,38 @@ class SheetCaller {
     }
 }
 
+class SheetShift {
+    constructor(datetime_str, supervisor, callers) {
+        this.datetime_str = datetime_str;
+        this.supervisor = supervisor;
+        this.callers = callers;
+
+        // parse the date/time from datetime_str
+        // format: day/month start_time-end_time (1/5 1830-2130)
+        var datetime = this.datetime_str.split(" ");
+        var date_str = datetime[0];
+        var time_str = datetime[1];
+        var d = date_str.split("/");
+        var t = time_str.split("-");
+        this.start_time = new Date(year, parseInt(d[1]) - 1, parseInt(d[0]), parseInt(t[0].slice(0, 2)), parseInt(t[0].slice(2)));
+        this.end_time = new Date(year, parseInt(d[1]) - 1, parseInt(d[0]), parseInt(t[1].slice(0, 2)), parseInt(t[1].slice(2)));
+    }
+}
+
 class Sheet {
     constructor() {
         // dict of SheetCaller objects
         this.callers = {};
+        this.shifts = {};
     }
 
     clear() {
         // Clear the timesheets
         if (this.callers) {
             this.callers = {};
+        }
+        if (this.shifts) {
+            this.shifts = {};
         }
     }
 }
