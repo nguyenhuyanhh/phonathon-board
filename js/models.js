@@ -33,16 +33,16 @@ class BoardCaller {
 
     toStr() {
         // String representation of the Caller object
-        // e.g. Caller X getting 1 pledges, 1 credits, 1 GIROs: (P)100,(C)50,(G)10
+        // e.g. X: (P)100,(C)50,(G)10
         var plgs = [];
         this.pledges.forEach(element => {
             plgs.push(element.toStr());
         });
         if (plgs.length) {
-            return ("Caller " + this.name + " getting " + this.pledgeCounts[TYPE_PL] + " pledges, " + this.pledgeCounts[TYPE_CC] + " credits, " + this.pledgeCounts[TYPE_GR] + " GIROs: " + plgs.join(","));
+            return (this.name + ": " + plgs.join(","));
         }
         else {
-            return ("Caller " + this.name + " gets no pledge");
+            return (this.name + ": no pledge");
         }
     }
 }
