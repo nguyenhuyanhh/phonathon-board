@@ -143,12 +143,35 @@ function parseTimesheets(data, shifts) {
     }
 }
 
+function displayTimesheets() {
+    // Display the timesheets
+    sheet = sheet.filter();
+
+    // Populate callers
+    var sel = document.getElementById("sheet-caller");
+    for (var caller in sheet.callers) {
+        var opt = document.createElement("option");
+        opt.value = caller;
+        opt.innerHTML = caller;
+        sel.appendChild(opt);
+    }
+}
+
 function processTimesheets(data, tabletop) {
     // Parse the spreadsheet
     parseCallers(tabletop.sheets("Callers").all());
 
     var shifts = parseShifts(tabletop.sheets("Timesheets").columnNames);
     parseTimesheets(tabletop.sheets("Timesheets").all(), shifts);
+
+    // Display timesheets
+    displayTimesheets();
+}
+
+function formHandler(f) {
+    var formData = new FormData(f.target);
+    console.log(formData);
 }
 
 window.addEventListener("DOMContentLoaded", loadTimesheets);
+document.querySelector("form").addEventListener("submit", formHandler);

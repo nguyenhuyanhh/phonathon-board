@@ -45,7 +45,15 @@
             <div class="container-fluid" id="main-div"></div>
         </div>
         <div class="tab-pane fade" id="nav-sheet" role="tabpanel" aria-labelledby="nav-sheet-pill">
-            <div class="container-fluid"></div>
+            <div class="container-fluid">
+                <form class="form-inline">
+                    <label for="sheet-caller" class="m-2">Caller</label>
+                    <select name="caller" id="sheet-caller" class="form-control m-2"></select>
+                    <label for="sheet-timesheet" class="m-2">Timesheet</label>
+                    <select name="timesheet" id="sheet-timesheet" class="form-control m-2"></select>
+                    <button class="btn btn-primary" type="submit">Get timesheet</button>
+                </form>
+            </div>
         </div>
     </div>
 
