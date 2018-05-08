@@ -1,16 +1,15 @@
 "use strict";
 
-/* exported Board, BoardCaller, BoardPledge, comparePledgeAmount, comparePledgeOrder */
+/* exported Board, BoardCaller, BoardPledge, comparePledgeAmount, comparePledgeOrder, Sheet, SheetCaller, URL, TYPE_PL, TYPE_CC, TYPE_GR */
 
-// Object definitions
-
+const URL = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 const TYPE_PL = 1; // pledge
 const TYPE_CC = 2; // credit card
 const TYPE_GR = 3; // GIRO
 const TYPES = { 1: "P", 2: "C", 3: "G" };
 
 class BoardCaller {
-    constructor (name) {
+    constructor(name) {
         // define a Caller
         this.name = name;
         // array of BoardPledge objects
@@ -23,7 +22,7 @@ class BoardCaller {
         this.pledgeAmounts = { 1: 0, 2: 0, 3: 0 };
     }
 
-    addPledge (pledge) {
+    addPledge(pledge) {
         // Add a pledge to the caller's pledges
         this.pledges.push(pledge);
         // update the count and amount
@@ -32,7 +31,7 @@ class BoardCaller {
         this.pledgeAmounts[pledge.type] += pledge.amount;
     }
 
-    toStr () {
+    toStr() {
         // String representation of the Caller object
         // e.g. Caller X getting 1 pledges, 1 credits, 1 GIROs: (P)100,(C)50,(G)10
         var plgs = [];
@@ -72,7 +71,7 @@ function compareCaller(caller1, caller2) {
 }
 
 class BoardPledge {
-    constructor (amount, type, sortOrder) {
+    constructor(amount, type, sortOrder) {
         // define a Pledge
         this.amount = amount;
         // pledge type
@@ -81,7 +80,7 @@ class BoardPledge {
         this.sortOrder = sortOrder;
     }
 
-    toStr () {
+    toStr() {
         // String representation of a Pledge object
         // e.g. (P)50
         return ("(" + TYPES[this.type] + ")" + this.amount);
@@ -111,20 +110,45 @@ function comparePledgeOrder(pledge1, pledge2) {
 }
 
 class Board {
-    constructor () {
+    constructor() {
         // array of BoardCaller objects
         this.callers = [];
     }
 
-    clear () {
+    clear() {
         // Clear the board
         if (this.callers) {
             this.callers = [];
         }
     }
 
-    sort () {
+    sort() {
         // Sort callers in descending order
         this.callers.sort(compareCaller).reverse();
+    }
+}
+
+class SheetCaller {
+    constructor(name, full_name, role, ic, matric, email) {
+        this.name = name;
+        this.full_name = full_name;
+        this.role = role;
+        this.ic = ic;
+        this.matric = matric;
+        this.email = email;
+    }
+}
+
+class Sheet {
+    constructor() {
+        // dict of SheetCaller objects
+        this.callers = {};
+    }
+
+    clear() {
+        // Clear the timesheets
+        if (this.callers) {
+            this.callers = {};
+        }
     }
 }

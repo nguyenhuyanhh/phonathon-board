@@ -30,6 +30,8 @@
         "BoardCaller": false,
         "BoardPledge": false,
         "Board": false,
+        "SheetCaller": false,
+        "Sheet": false,
         "TYPE_PL": false,
         "TYPE_CC": false,
         "TYPE_GR": false,

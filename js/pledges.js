@@ -1,15 +1,15 @@
 "use strict";
 
-const URL = "1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic";
 var board = new Board();
 
-function load() {
+function loadBoard() {
     // load the spreadsheet using Tabletop
     console.debug("Refreshing data from spreadsheet.");
     board.clear();
     Tabletop.init({
         key: URL,
-        callback: process,
+        wanted: ["Settings", "Pledges"],
+        callback: processBoard,
     });
 }
 
@@ -30,23 +30,17 @@ function pledgesFromStr(caller, str, type, special) {
     });
 }
 
-function process(data, tabletop) {
-    // get the spreadsheet
-    data = tabletop.sheets("Pledges").all();
-    var settings = tabletop.sheets("Settings").all()[0];
+function parseSettings(data) {
+    // Parse setting from sheet "Settings"
+    var settings = {};
+    settings.special_mode = (data.special_mode == "1") ? true : false;
+    settings.maintenance = (data.maintenance == "1") ? true : false;
+    settings.manual_refresh = (data.manual_refresh == "1") ? true : false;
+    return settings;
+}
 
-    // log the settings
-    if (settings.special_mode == "1") {
-        console.debug("Special mode is on.");
-    }
-    if (settings.maintenance == "1") {
-        console.debug("Maintenance mode is on.");
-    }
-    if (settings.manual_refresh == "1") {
-        console.debug("Auto-refresh is off.");
-    }
-
-    // process the spreadsheet
+function parseBoard(data, settings) {
+    // Parse board from sheet "Pledges"
     for (var i = 0; i < data.length; i++) {
         // get caller
         var caller = new BoardCaller(data[i].Caller);
@@ -63,13 +57,22 @@ function process(data, tabletop) {
         }
         board.callers.push(caller);
     }
+}
+
+function processBoard(data, tabletop) {
+    // Parse the spreadsheet
+    var boardSheet = tabletop.sheets("Pledges");
+    var settingSheet = tabletop.sheets("Settings");
+
+    var settings = parseSettings(settingSheet.all()[0]);
+    parseBoard(boardSheet.all(), settings);
 
     // output
     var mainDiv = document.getElementById("main-div");
     while (mainDiv.firstChild) {
         mainDiv.removeChild(mainDiv.firstChild);
     } // clear the main div first
-    output(settings);
+    outputBoard(settings);
 }
 
 // Style constant for one-column layout for name only
@@ -82,7 +85,7 @@ const CLS_PLEDGES = "col-12 col-md-6 col-lg-4 col-xl-3";
 // Style constant for a single pledge
 const CLS_PLDG = "col-pledge col-2";
 
-function output(config) {
+function outputBoard(settings) {
 
     function toHtml(pledge) {
         // return HTML div of a pledge
@@ -103,7 +106,7 @@ function output(config) {
         return div;
     }
 
-    if (config.maintenance == "1") {
+    if (settings.maintenance) {
         // Render maintenance site
         var maintDiv = document.createElement("div");
         maintDiv.innerHTML = "The site is under maintenance, please come back later!";
@@ -146,7 +149,7 @@ function output(config) {
 
                 // split pledges in groups of 6
                 // each put into a row
-                if (config.special_mode == "1") {
+                if (settings.special_mode) {
                     var sortedPledges = caller.pledges.sort(comparePledgeOrder);
                 }
                 else {
@@ -186,8 +189,8 @@ const CLOCK_SIGNAL = REFRESH_INTERVAL / 1000; // 15
 var clk = CLOCK_SIGNAL;
 
 // Auto-refresh
-window.addEventListener("DOMContentLoaded", load);
-var id = setInterval(load, REFRESH_INTERVAL);
+window.addEventListener("DOMContentLoaded", loadBoard);
+var id = setInterval(loadBoard, REFRESH_INTERVAL);
 
 function clock() {
     // Auto-refresh timer
@@ -204,8 +207,8 @@ function manualRefresh() {
     // Manual refresh
     clearInterval(id);
     clk = CLOCK_SIGNAL;
-    load();
-    id = setInterval(load, REFRESH_INTERVAL);
+    loadBoard();
+    id = setInterval(loadBoard, REFRESH_INTERVAL);
 }
 
 document.getElementById("button-refresh").onclick = manualRefresh;
