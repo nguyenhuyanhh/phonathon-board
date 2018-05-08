@@ -23,71 +23,123 @@ function parseCallers(data) {
     }
 }
 
+function parseShifts(data) {
+    // Parse shifts from the header row of sheet "Timesheets"
+    var year = (new Date()).getFullYear();
+    var shifts = {};
+    data.forEach(datetime_str => {
+        if (datetime_str != "Shift") {
+            // parse the date/time from str
+            // format: day/month start_time-end_time (1/5 1830-2130)
+            var shift = {};
+            var datetime = datetime_str.split(" ");
+            var date_str = datetime[0];
+            var time_str = datetime[1];
+            var d = date_str.split("/");
+            var t = time_str.split("-");
+            var month = parseInt(d[1]) - 1;
+            var day = parseInt(d[0]);
+            var start_time = new Date(year, month, day, parseInt(t[0].slice(0, 2)), parseInt(t[0].slice(2)));
+            var end_time = new Date(year, month, day, parseInt(t[1].slice(0, 2)), parseInt(t[1].slice(2)));
+            shift.year = year;
+            shift.month = month;
+            shift.day = day;
+            shift.start_time = start_time;
+            shift.end_time = end_time;
+            shift.sunday = (start_time.getDay() == 0) ? true : false;
+            shifts[datetime_str] = shift;
+        }
+    });
+    return shifts;
+}
+
+function parseCell(cell, col, shifts, supervisor) {
+    // Parse a non-header cell from sheet "Timesheets"
+    if (!cell || cell == "Supervisor") {
+        // empty/ useless cell
+        return;
+    }
+    var obj = shifts[col];
+
+    try {
+        // Parse the caller name and timing info
+        var caller_time = cell.trim().split("(");
+        if (caller_time.length == 1) {
+            // normal shifts
+            var caller = caller_time[0];
+            var start_time = new Date(obj.start_time);
+            var end_time = new Date(obj.end_time);
+        } else if (caller_time.length == 2) {
+            // different start time/ end time
+            caller = caller_time[0].trim();
+            var start_end_str = caller_time[1].trim().slice(0, 9);
+            var t = start_end_str.split("-");
+            start_time = new Date(obj.year, obj.month, obj.day, parseInt(t[0].slice(0, 2)), parseInt(t[0].slice(2)));
+            end_time = new Date(obj.year, obj.month, obj.day, parseInt(t[1].slice(0, 2)), parseInt(t[1].slice(2)));
+        } else {
+            throw "Invalid cell: " + cell;
+        }
+
+        // Check caller
+        if (sheet.callers.hasOwnProperty(caller)) {
+            var callerObj = sheet.callers[caller];
+        } else {
+            throw "Invalid caller " + caller;
+        }
+
+        // Assign supervisor
+        if (supervisor) {
+            if (callerObj.role != "Supervisor") {
+                shifts[col].supervisor = undefined;
+                throw "Not a supervisor: " + caller;
+            } else {
+                shifts[col].supervisor = caller;
+            }
+        }
+
+        // Adjust timing for supervisor
+        if (supervisor) {
+            if (!obj.sunday) {
+                // non-Sunday shifts, shift start time 15 mins earlier
+                start_time.setMinutes(start_time.getMinutes() - 15);
+            } else if (obj.start_time.getHours() == 16) {
+                // Sunday shifts, shift end time 15 mins later
+                end_time.setMinutes(end_time.getMinutes() + 15);
+            }
+        }
+
+        // Make SheetShift obj
+        if (supervisor) {
+            // Supervisor shift
+            var type = "Supervisor";
+            var sup = undefined;
+        } else if (callerObj.role == "Caller") {
+            // Caller shift
+            type = "Caller";
+            sup = obj.supervisor;
+        } else {
+            // Mentor shift
+            type = "Mentor";
+            sup = obj.supervisor;
+        }
+        callerObj.addShift(col, new SheetShift(type, start_time, end_time, sup));
+
+    } catch (error) {
+        console.error(error);
+        return;
+    }
+
+}
+
 function parseTimesheets(data, shifts) {
     // Parse timesheets from sheet "Timesheets"
-    // Initialize lookup with shifts
-    var lookup = {};
-    shifts.forEach(shift => {
-        lookup[shift] = { "callers": [] };
-    });
-
-    // First row: supervisors
-    var sups = data[0];
-    for (var key in sups) {
-        var value = sups[key];
-        try {
-            if (value == "Supervisor") {
-                // first column, don't care
-                continue;
-            }
-            // check whether cell value is a valid supervisor
-            if (sheet.callers.hasOwnProperty(value)) {
-                var sup = sheet.callers[value];
-                if (sup.role == "Supervisor") {
-                    lookup[key]["supervisor"] = sheet.callers[value];
-                } else {
-                    throw value + " is not a supervisor";
-                }
-            } else {
-                throw value + " is not a caller";
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    // Remaining rows
-    for (var i = 1; i < data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
         var row = data[i];
-        for (key in row) {
-            value = row[key];
-            try {
-                if (!value) {
-                    // empty cell
-                    continue;
-                }
-                // check whether cell value is a valid caller
-                if (sheet.callers.hasOwnProperty(value)) {
-                    lookup[key]["callers"].push(sheet.callers[value]);
-                } else {
-                    throw value + "is not a caller";
-                }
-            } catch (error) {
-                console.error(error);
-            }
+        var supervisor = (i == 0) ? true : false;
+        for (var col in row) {
+            var cell = row[col];
+            parseCell(cell, col, shifts, supervisor);
         }
-    }
-
-    // Create SheetShift objects
-    for (key in lookup) {
-        value = lookup[key];
-        if (value.hasOwnProperty("supervisor")) {
-            var supervisor = value["supervisor"];
-        } else {
-            supervisor = false;
-        }
-        var shift = new SheetShift(key, supervisor, value["callers"]);
-        sheet.shifts[key] = shift;
     }
 }
 
@@ -95,14 +147,8 @@ function processTimesheets(data, tabletop) {
     // Parse the spreadsheet
     parseCallers(tabletop.sheets("Callers").all());
 
-    var t = tabletop.sheets("Timesheets");
-    var shifts = [];
-    t.columnNames.forEach(element => {
-        if (element != "Shift") {
-            shifts.push(element);
-        }
-    });
-    parseTimesheets(t.all(), shifts);
+    var shifts = parseShifts(tabletop.sheets("Timesheets").columnNames);
+    parseTimesheets(tabletop.sheets("Timesheets").all(), shifts);
 }
 
 window.addEventListener("DOMContentLoaded", loadTimesheets);

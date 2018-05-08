@@ -7,7 +7,6 @@ const TYPE_PL = 1; // pledge
 const TYPE_CC = 2; // credit card
 const TYPE_GR = 3; // GIRO
 const TYPES = { 1: "P", 2: "C", 3: "G" };
-const year = (new Date()).getFullYear();
 
 class BoardCaller {
     constructor(name) {
@@ -137,41 +136,62 @@ class SheetCaller {
         this.ic = ic;
         this.matric = matric;
         this.email = email;
+        this.shifts = {};
+    }
+
+    hasShifts() {
+        // Check whether a Caller has shifts
+        return (Object.getOwnPropertyNames(this.shifts).length != 0);
+    }
+
+    addShift(col, shift) {
+        // Add a shift, with key as the column name in the spreadsheet
+        this.shifts[col] = shift;
+    }
+
+    clearShifts() {
+        // Clear the shifts
+        if (Object.getOwnPropertyNames(this.shifts).length != 0) {
+            this.shifts = {};
+        }
     }
 }
 
 class SheetShift {
-    constructor(datetime_str, supervisor, callers) {
-        this.datetime_str = datetime_str;
+    constructor(type, start_time, end_time, supervisor) {
+        this.type = type;
+        this.start_time = start_time;
+        this.end_time = end_time;
         this.supervisor = supervisor;
-        this.callers = callers;
-
-        // parse the date/time from datetime_str
-        // format: day/month start_time-end_time (1/5 1830-2130)
-        var datetime = this.datetime_str.split(" ");
-        var date_str = datetime[0];
-        var time_str = datetime[1];
-        var d = date_str.split("/");
-        var t = time_str.split("-");
-        this.start_time = new Date(year, parseInt(d[1]) - 1, parseInt(d[0]), parseInt(t[0].slice(0, 2)), parseInt(t[0].slice(2)));
-        this.end_time = new Date(year, parseInt(d[1]) - 1, parseInt(d[0]), parseInt(t[1].slice(0, 2)), parseInt(t[1].slice(2)));
     }
 }
 
 class Sheet {
-    constructor() {
+    constructor(callers) {
         // dict of SheetCaller objects
-        this.callers = {};
-        this.shifts = {};
+        if (callers) {
+            this.callers = callers;
+        } else {
+            this.callers = {};
+        }
     }
 
     clear() {
         // Clear the timesheets
-        if (this.callers) {
+        if (Object.getOwnPropertyNames(this.callers).length != 0) {
             this.callers = {};
         }
-        if (this.shifts) {
-            this.shifts = {};
+    }
+
+    filter() {
+        // Return a Sheet object that only contains Callers with shifts
+        var callers = {};
+        for (var caller in this.callers) {
+            var value = this.callers[caller];
+            if (value.hasShifts()) {
+                callers[caller] = value;
+            }
         }
+        return new Sheet(callers);
     }
 }
