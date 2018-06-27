@@ -117,16 +117,10 @@ function outputBoard(settings) {
     }
     else {
         // HTML representation of the data
-        var totalAmount = { 1: 0, 2: 0, 3: 0 };
         board.sort();
         board.callers.forEach(caller => {
             // Log output to compare with visual output later
             console.debug(caller.toStr());
-
-            // Calculate the total pledge amount of the whole board
-            for (var i = 1; i <= 3; i++) {
-                totalAmount[i] += caller.pledgeAmounts[i];
-            }
 
             // Caller's outer row
             var row = document.createElement("div");
@@ -158,7 +152,7 @@ function outputBoard(settings) {
                     sortedPledges = caller.pledges.sort(comparePledgeAmount);
                 }
                 var countRows = Math.floor(sortedPledges.length / 6);
-                for (i = 0; i <= countRows; i++) {
+                for (var i = 0; i <= countRows; i++) {
                     // wrapping elements
                     var colPlgs = document.createElement("div");
                     colPlgs.className = CLS_PLEDGES;
@@ -182,6 +176,7 @@ function outputBoard(settings) {
         });
 
         // Display the total
+        var totalAmount = board.getTotalAmount();
         document.getElementById("summary").textContent = "Total Pledges: $" + totalAmount[1] + " | Total Credit Cards: $" + totalAmount[2] + " | Total GIROs: $" + totalAmount[3];
     }
 }

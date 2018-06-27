@@ -113,18 +113,30 @@ class Board {
     constructor() {
         // array of BoardCaller objects
         this.callers = [];
+        this.totalAmount = { 1: 0, 2: 0, 3: 0 };
     }
 
     clear() {
         // Clear the board
         if (this.callers) {
             this.callers = [];
+            this.totalAmount = { 1: 0, 2: 0, 3: 0 };
         }
     }
 
     sort() {
         // Sort callers in descending order
         this.callers.sort(compareCaller).reverse();
+    }
+
+    getTotalAmount() {
+        // Get the total pledge amount for the whole board
+        this.callers.forEach(caller => {
+            for (var i = 1; i <= 3; i++) {
+                this.totalAmount[i] += caller.pledgeAmounts[i];
+            }
+        });
+        return this.totalAmount;
     }
 }
 
