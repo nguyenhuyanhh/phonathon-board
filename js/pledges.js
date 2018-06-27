@@ -38,6 +38,7 @@ function parseSettings(data) {
     settings.special_mode = (data.special_mode == "0") ? false : true;
     settings.maintenance = (data.maintenance == "0") ? false : true;
     settings.manual_refresh = (data.manual_refresh == "0") ? false : true;
+    settings.two_col = (data.two_col == "0") ? false : true;
     return settings;
 }
 
@@ -108,6 +109,61 @@ function outputBoard(settings) {
         return div;
     }
 
+    function getRow(caller, settings) {
+        // return HTML div of a row
+
+        // Caller's outer row
+        var row = document.createElement("div");
+        row.className = "row-caller row";
+
+        // Caller's name
+        var colName = document.createElement("div");
+        colName.innerHTML = caller.name;
+
+        // Pledges' outer row
+        var colPledges = document.createElement("div");
+
+        // Pledges
+        if (caller.pledges.length === 0) {
+            // no pledges, just output caller name
+            colName.className = CLS_NAME_ONLY;
+            row.appendChild(colName);
+        }
+        else {
+            colName.className = CLS_NAME_WITH_PL;
+            colPledges.className = CLS_PLEDGES_WITH_PL;
+
+            // split pledges in groups of 6
+            // each put into a row
+            if (settings.special_mode) {
+                var sortedPledges = caller.pledges.sort(comparePledgeOrder);
+            }
+            else {
+                sortedPledges = caller.pledges.sort(comparePledgeAmount);
+            }
+            var countRows = Math.floor(sortedPledges.length / 6);
+            for (var i = 0; i <= countRows; i++) {
+                // wrapping elements
+                var colPlgs = document.createElement("div");
+                colPlgs.className = CLS_PLEDGES;
+                var rowPlgs = document.createElement("div");
+                rowPlgs.className = "row";
+
+                // pledges
+                var plgs = sortedPledges.slice(i * 6, (i + 1) * 6);
+                plgs.forEach(element => {
+                    rowPlgs.appendChild(toHtml(element));
+                });
+                colPlgs.appendChild(rowPlgs);
+                colPledges.appendChild(colPlgs);
+            }
+
+            row.appendChild(colName);
+            row.appendChild(colPledges);
+        }
+        return row;
+    }
+
     if (settings.maintenance) {
         // Render maintenance site
         var maintDiv = document.createElement("div");
@@ -119,59 +175,8 @@ function outputBoard(settings) {
         // HTML representation of the data
         board.sort();
         board.callers.forEach(caller => {
-            // Log output to compare with visual output later
             console.debug(caller.toStr());
-
-            // Caller's outer row
-            var row = document.createElement("div");
-            row.className = "row-caller row";
-
-            // Caller's name
-            var colName = document.createElement("div");
-            colName.innerHTML = caller.name;
-
-            // Pledges' outer row
-            var colPledges = document.createElement("div");
-
-            // Pledges
-            if (caller.pledges.length === 0) {
-                // no pledges, just output caller name
-                colName.className = CLS_NAME_ONLY;
-                row.appendChild(colName);
-            }
-            else {
-                colName.className = CLS_NAME_WITH_PL;
-                colPledges.className = CLS_PLEDGES_WITH_PL;
-
-                // split pledges in groups of 6
-                // each put into a row
-                if (settings.special_mode) {
-                    var sortedPledges = caller.pledges.sort(comparePledgeOrder);
-                }
-                else {
-                    sortedPledges = caller.pledges.sort(comparePledgeAmount);
-                }
-                var countRows = Math.floor(sortedPledges.length / 6);
-                for (var i = 0; i <= countRows; i++) {
-                    // wrapping elements
-                    var colPlgs = document.createElement("div");
-                    colPlgs.className = CLS_PLEDGES;
-                    var rowPlgs = document.createElement("div");
-                    rowPlgs.className = "row";
-
-                    // pledges
-                    var plgs = sortedPledges.slice(i * 6, (i + 1) * 6);
-                    plgs.forEach(element => {
-                        rowPlgs.appendChild(toHtml(element));
-                    });
-                    colPlgs.appendChild(rowPlgs);
-                    colPledges.appendChild(colPlgs);
-                }
-
-                row.appendChild(colName);
-                row.appendChild(colPledges);
-            }
-
+            var row = getRow(caller, settings);
             document.getElementById("main-div").appendChild(row);
         });
 
