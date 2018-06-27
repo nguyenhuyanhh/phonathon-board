@@ -71,29 +71,44 @@ function processBoard(data, tabletop) {
     parseBoard(boardSheet.all(), settings);
 
     // output
-    var mainDiv = document.getElementById("main-div");
-    while (mainDiv.firstChild) {
-        mainDiv.removeChild(mainDiv.firstChild);
-    } // clear the main div first
+    clearBoard();
     outputBoard(settings);
 }
 
-// Style constant for one-column layout for name only
+// Style constants for one-column layout
 const CLS_NAME_ONLY = "col-caller col-3 col-lg-2 col-offset-right-9 col-lg-offset-right-10";
-// Style constants for two-column layout for name-pledges
 const CLS_NAME_WITH_PL = "col-caller col-3 col-lg-2";
 const CLS_PLEDGES_WITH_PL = "col-9 col-lg-10 row";
-// 6-12-18 pledges on a line depending on screen size
 const CLS_PLEDGES = "col-12 col-md-6 col-lg-4 col-xl-3";
-// Style constant for a single pledge
 const CLS_PLDG = "col-pledge col-2";
+
+// Style constants for two-column layout
+const CLS_NAME_ONLY_2 = "col-caller col-6 col-lg-4 col-offset-right-6 col-lg-offset-right-8";
+const CLS_NAME_WITH_PL_2 = "col-caller col-6 col-lg-4";
+const CLS_PLEDGES_WITH_PL_2 = "col-6 col-lg-8 row";
+const CLS_PLEDGES_2 = "col-12 col-lg-6 col-xl-4";
+const CLS_PLDG_2 = "col-pledge col-4";
+
+function clearBoard() {
+    // Clear board content before reloading
+    var divs = [
+        document.getElementById("main-div-one-col"),
+        document.getElementById("col-left"),
+        document.getElementById("col-right")
+    ];
+    divs.forEach(div => {
+        while (div.firstChild) {
+            div.removeChild(div.firstChild);
+        }
+    });
+}
 
 function outputBoard(settings) {
 
-    function toHtml(pledge) {
+    function toHtml(pledge, settings) {
         // return HTML div of a pledge
         var div = document.createElement("div");
-        div.className = CLS_PLDG;
+        div.className = (settings.two_col) ? CLS_PLDG_2 : CLS_PLDG;
         var subdiv = document.createElement("div");
         subdiv.innerHTML = pledge.amount;
         if (pledge.type == TYPE_PL) {
@@ -126,12 +141,12 @@ function outputBoard(settings) {
         // Pledges
         if (caller.pledges.length === 0) {
             // no pledges, just output caller name
-            colName.className = CLS_NAME_ONLY;
+            colName.className = (settings.two_col) ? CLS_NAME_ONLY_2 : CLS_NAME_ONLY;
             row.appendChild(colName);
         }
         else {
-            colName.className = CLS_NAME_WITH_PL;
-            colPledges.className = CLS_PLEDGES_WITH_PL;
+            colName.className = (settings.two_col) ? CLS_NAME_WITH_PL_2 : CLS_NAME_WITH_PL;
+            colPledges.className = (settings.two_col) ? CLS_PLEDGES_WITH_PL_2 : CLS_PLEDGES_WITH_PL;
 
             // split pledges in groups of 6
             // each put into a row
@@ -145,14 +160,14 @@ function outputBoard(settings) {
             for (var i = 0; i <= countRows; i++) {
                 // wrapping elements
                 var colPlgs = document.createElement("div");
-                colPlgs.className = CLS_PLEDGES;
+                colPlgs.className = (settings.two_col) ? CLS_PLEDGES_2 : CLS_PLEDGES;
                 var rowPlgs = document.createElement("div");
                 rowPlgs.className = "row";
 
                 // pledges
                 var plgs = sortedPledges.slice(i * 6, (i + 1) * 6);
-                plgs.forEach(element => {
-                    rowPlgs.appendChild(toHtml(element));
+                plgs.forEach(plg => {
+                    rowPlgs.appendChild(toHtml(plg, settings));
                 });
                 colPlgs.appendChild(rowPlgs);
                 colPledges.appendChild(colPlgs);
@@ -174,10 +189,18 @@ function outputBoard(settings) {
     else {
         // HTML representation of the data
         board.sort();
+        var i = 0;
         board.callers.forEach(caller => {
             console.debug(caller.toStr());
             var row = getRow(caller, settings);
-            document.getElementById("main-div").appendChild(row);
+            if (settings.two_col) {
+                var div = (i % 2 == 0) ? document.getElementById("col-left") : document.getElementById("col-right");
+            }
+            else {
+                div = document.getElementById("main-div-one-col");
+            }
+            div.appendChild(row);
+            i++;
         });
 
         // Display the total
