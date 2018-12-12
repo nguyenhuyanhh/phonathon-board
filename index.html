@@ -14,12 +14,6 @@
 <body>
     <header class="navbar navbar-dark navbar-expand bg-dark fixed-top">
         <a class="navbar-brand" href="#">Phonathon Management System</a>
-        <div class="navbar-nav mr-auto">
-            <div class="nav" id="nav-pills" role="tablist">
-                <a class="nav-item nav-link active" id="nav-board-pill" data-toggle="pill" href="#nav-board" role="tab" aria-controls="nav-board">Pledges</a>
-                <a class="nav-item nav-link" id="nav-sheet-pill" data-toggle="pill" href="#nav-sheet" role="tab" aria-controls="nav-sheet">Timesheets</a>
-            </div>
-        </div>
         <span class="navbar-text ml-auto font-italic" id="clock"></span>
         <div class="navbar-nav ml-3">
             <div class="navbar-item dropdown">
@@ -35,34 +29,19 @@
         </div>
     </header>
 
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="nav-board" role="tabpanel" aria-labelledby="nav-board-pill">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col col-summary" id="summary"></div>
-                </div>
-            </div>
-            <div class="container-fluid" id="main-div-one-col"></div>
-            <div class="container-fluid" id="main-div-two-col">
-                <div class="row">
-                    <div class="col" id="col-left"></div>
-                    <div class="col" id="col-right"></div>
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane fade" id="nav-sheet" role="tabpanel" aria-labelledby="nav-sheet-pill">
-            <div class="container-fluid">
-                <form class="form-inline">
-                    <label for="sheet-caller" class="m-2">Caller</label>
-                    <select name="caller" id="sheet-caller" class="form-control m-2"></select>
-                    <label for="sheet-timesheet" class="m-2">Timesheet</label>
-                    <select name="timesheet" id="sheet-timesheet" class="form-control m-2"></select>
-                    <button class="btn btn-primary" type="submit">Get timesheet</button>
-                </form>
-            </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-summary" id="summary"></div>
         </div>
     </div>
-
+    <div class="container-fluid" id="main-div-one-col"></div>
+    <div class="container-fluid" id="main-div-two-col">
+        <div class="row">
+            <div class="col" id="col-left"></div>
+            <div class="col" id="col-right"></div>
+        </div>
+    </div>
+    
     <div class="modal fade" id="about-modal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -94,7 +73,6 @@
     <script src="vendored/js/bootstrap.bundle.min.js"></script>
     <script src='js/models.js'></script>
     <script src='js/pledges.js'></script>
-    <script src='js/timesheets.js'></script>
     <script src='js/build_info.js'></script>
 </body>
 
