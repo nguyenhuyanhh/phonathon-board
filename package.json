@@ -1,0 +1,27 @@
+{
+  "name": "phonathon-board",
+  "version": "1.0.0",
+  "description": "Phonathon management system for lazy supervisors. Available at [phonathon-management-system](https://nguyenhuyanhh.github.io/phonathon-management-system/).",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^5.15.3",
+    "gh-pages": "^2.0.1",
+    "prettier": "^1.16.4",
+    "shx": "^0.3.2"
+  },
+  "scripts": {
+    "build": "shx mkdir -p dist/ && shx cp -fr css/ js/ vendored/ index.html dist/",
+    "deploy": "gh-pages -d dist",
+    "clean": "shx rm -rf dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenhuyanhh/phonathon-board.git"
+  },
+  "author": "Nguyen Huy Anh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenhuyanhh/phonathon-board/issues"
+  },
+  "homepage": "https://github.com/nguyenhuyanhh/phonathon-board#readme"
+}
