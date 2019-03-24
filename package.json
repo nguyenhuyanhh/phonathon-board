@@ -8,13 +8,17 @@
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
+    "bootstrap": "^4.3.1",
+    "css-loader": "^2.1.1",
     "eslint": "^5.15.3",
     "eslint-plugin-react": "^7.12.4",
     "gh-pages": "^2.0.1",
     "prettier": "^1.16.4",
     "react": "^16.8.5",
+    "react-bootstrap": "^1.0.0-beta.6",
     "react-dom": "^16.8.5",
     "shx": "^0.3.2",
+    "style-loader": "^0.23.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
@@ -22,7 +26,7 @@
   "scripts": {
     "build": "shx mkdir -p dist/ && shx cp index.html dist/ && webpack --mode production",
     "build-legacy": "shx mkdir -p dist/ && shx cp -fr css/ js/ vendored/ dist/ && shx cp -f index-legacy.html dist/index.html",
-    "dev-server": "webpack-dev-server", 
+    "dev-server": "webpack-dev-server",
     "deploy": "gh-pages -d dist",
     "clean": "shx rm -rf dist/"
   },
