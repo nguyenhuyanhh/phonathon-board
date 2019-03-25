@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import NavItem from "react-bootstrap/NavItem";
 
-function AboutModal() {
+const AboutModal = () => {
   const [show, setShow] = useState(false);
   return (
     <>
@@ -57,6 +57,6 @@ function AboutModal() {
       </Modal>
     </>
   );
-}
+};
 
 export default AboutModal;
