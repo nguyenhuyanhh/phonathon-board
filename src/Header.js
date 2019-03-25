@@ -1,5 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
-
 import AboutModal from "./AboutModal";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -15,7 +13,7 @@ const Header = () => {
           <NavDropdown.Item>Refresh</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item>
-            <AboutModal/>
+            <AboutModal />
           </NavDropdown.Item>
         </NavDropdown>
       </Nav>

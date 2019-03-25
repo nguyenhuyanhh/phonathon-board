@@ -5,21 +5,32 @@ import React from "react";
 import Row from "react-bootstrap/Row";
 
 const CallerRow = props => {
-  const { Caller, pledges } = props.callerData;
+  const { caller, ...pledges } = props.callerData;
+  const callerStyle = {
+    height: "48px",
+    lineHeight: "48px",
+    fontSize: "1.2rem"
+  };
   return (
     <Row>
-      <Col xs={3}>{Caller}</Col>
-      <CallerPledges pledges={pledges} />
+      <Col xs={3} style={callerStyle}>
+        {caller}
+      </Col>
+      <Col>
+        <Row>
+          <CallerPledges pledges={pledges} />
+        </Row>
+      </Col>
     </Row>
   );
 };
 
 CallerRow.propTypes = {
   callerData: PropType.shape({
-    Caller: PropType.string,
-    CC: PropType.arrayOf(PropType.string),
-    GIRO: PropType.arrayOf(PropType.string),
-    Pledge: PropType.arrayOf(PropType.string)
+    caller: PropType.string,
+    cc: PropType.arrayOf(PropType.string),
+    giro: PropType.arrayOf(PropType.string),
+    pledge: PropType.arrayOf(PropType.string)
   }).isRequired
 };
 
