@@ -1,9 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import CallerList from "./CallerList";
+import Container from "react-bootstrap/Container";
 import Header from "./Header";
 import React from "react";
 import ReactDOM from "react-dom";
+import Summary from "./Summary";
 
 const data = [
   {
@@ -24,7 +26,10 @@ const App = () => {
   return (
     <>
       <Header />
-      <CallerList data={data} />
+      <Container fluid>
+        <Summary data={data} />
+        <CallerList data={data} />
+      </Container>
     </>
   );
 };

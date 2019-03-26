@@ -1,16 +1,11 @@
 import CallerRow from "./CallerRow";
-import Container from "react-bootstrap/Container";
 import PropType from "prop-types";
 import React from "react";
 
 const CallerList = props => {
-  return (
-    <Container fluid>
-      {props.data.map((callerData, key) => {
-        return <CallerRow key={key} callerData={callerData} />;
-      })}
-    </Container>
-  );
+  return props.data.map((callerData, key) => {
+    return <CallerRow key={key} callerData={callerData} />;
+  });
 };
 
 CallerList.propTypes = {

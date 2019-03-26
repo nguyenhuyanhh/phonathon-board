@@ -18,10 +18,11 @@ const Pledge = props => {
     width: "42px",
     height: "42px",
     lineHeight: "42px",
-    textAlign: "center"
+    textAlign: "center",
+    margin: "3px"
   };
   return (
-    <div style={style} className="mx-1">
+    <div style={style}>
       {props.amount}
     </div>
   );
