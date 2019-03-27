@@ -5,18 +5,18 @@ import React from "react";
 const CallerPledges = props => {
   const { cc: ccList, giro: giroList, pledge: pledgeList } = props.pledges;
   return ccList
-    .map((amount, key) => {
-      return <Pledge type="cc" amount={amount} key={`cc-${key}`} />;
-    })
+    .map((amount, key) => (
+      <Pledge type="cc" amount={amount} key={`cc-${key}`} />
+    ))
     .concat(
       giroList
-        .map((amount, key) => {
-          return <Pledge type="giro" amount={amount} key={`giro-${key}`} />;
-        })
+        .map((amount, key) => (
+          <Pledge type="giro" amount={amount} key={`giro-${key}`} />
+        ))
         .concat(
-          pledgeList.map((amount, key) => {
-            return <Pledge type="pledge" amount={amount} key={`pledge-${key}`} />;
-          })
+          pledgeList.map((amount, key) => (
+            <Pledge type="pledge" amount={amount} key={`pledge-${key}`} />
+          ))
         )
     );
 };
