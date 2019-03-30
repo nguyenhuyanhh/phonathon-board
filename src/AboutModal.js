@@ -1,13 +1,29 @@
 import React, { useState } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "react-bootstrap/Modal";
-import NavItem from "react-bootstrap/NavItem";
+import NavLink from "react-bootstrap/NavLink";
+import PropType from "prop-types";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+
+const Link = props => (
+  <a href={props.href} target="_blank" rel="noreferrer noopener">
+    {props.name}
+  </a>
+);
+
+Link.propTypes = {
+  href: PropType.string.isRequired,
+  name: PropType.string.isRequired
+};
 
 const AboutModal = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <NavItem onClick={() => setShow(true)}>About</NavItem>
+      <NavLink onClick={() => setShow(true)}>
+        <FontAwesomeIcon icon={faInfoCircle} />
+      </NavLink>
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>About Phonathon Management System</Modal.Title>
@@ -17,40 +33,18 @@ const AboutModal = () => {
           <div>(c) Nguyen Huy Anh, 2019</div>
           <div>
             {"Made using "}
-            <a
-              href="https://github.com/jsoma/tabletop"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Tabletop
-            </a>
+            <Link href="https://github.com/jsoma/tabletop" name="Tabletop" />
             {", "}
-            <a
-              href="https://getbootstrap.com/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Bootstrap 4
-            </a>
+            <Link href="https://getbootstrap.com/" name="Bootstrap 4" />
             {" and "}
-            <a
-              href="https://fontawesome.com/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Font Awesome 5
-            </a>
-            .
+            <Link href="https://fontawesome.com/" name="Font Awesome 5" />.
           </div>
           <div>
             {"Source code on "}
-            <a
+            <Link
               href="https://github.com/nguyenhuyanhh/phonathon-management-system"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              GitHub
-            </a>
+              name="GitHub"
+            />
             .
           </div>
         </Modal.Body>
