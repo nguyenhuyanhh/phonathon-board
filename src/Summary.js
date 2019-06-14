@@ -19,15 +19,23 @@ const style = {
   textAlign: "center"
 };
 
-const Summary = props => (
-  <Row className="my-3">
-    {["cc", "giro", "pledge"].map(type => (
-      <Col key={type} style={style}>
-        Total {displayMapping[type]}: ${calcTotal(props.data, type)}
-      </Col>
-    ))}
-  </Row>
-);
+class Summary extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Row className="my-3">
+        {["cc", "giro", "pledge"].map(type => (
+          <Col key={type} style={style}>
+            Total {displayMapping[type]}: ${calcTotal(this.props.data, type)}
+          </Col>
+        ))}
+      </Row>
+    );
+  }
+}
 
 Summary.propTypes = {
   data: PropType.arrayOf(PropType.any).isRequired

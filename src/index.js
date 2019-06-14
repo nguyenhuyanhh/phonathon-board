@@ -22,16 +22,18 @@ const data = [
   }
 ];
 
-const App = () => {
-  return (
-    <>
-      <Header />
-      <Container fluid>
-        <Summary data={data} />
-        <CallerList data={data} />
-      </Container>
-    </>
-  );
-};
+class App extends React.Component {
+  render() {
+    return (
+      <>
+        <Header />
+        <Container fluid>
+          <Summary data={data} />
+          <CallerList data={data} />
+        </Container>
+      </>
+    );
+  }
+}
 
 ReactDOM.render(<App />, document.getElementById("root"));

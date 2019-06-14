@@ -5,6 +5,7 @@ Phonathon management system for lazy supervisors. Available at [phonathon-manage
 ## Functionalities
 
 Friendly Google Sheets-based interface to
+
 - Update pledges, CCs and GIROs in (almost) real-time
 - Update and view callers' timesheets (also in real-time)
 
