@@ -25,7 +25,7 @@ class AboutModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>About Phonathon Management System</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body style={{ textAlign: "center" }}>
             <div>Build {this.props.buildNo}</div>
             <div>(c) Nguyen Huy Anh, 2019</div>
             <div>
