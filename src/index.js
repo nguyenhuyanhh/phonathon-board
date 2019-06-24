@@ -23,10 +23,33 @@ const data = [
 ];
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { data: data, clock: 30 };
+  }
+
+  tick() {
+    let clock = this.state.clock;
+    if (clock === 1) {
+      this.setState({ clock: 30 });
+    } else {
+      this.setState({ clock: clock - 1 });
+    }
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
   render() {
+    const { data, clock } = this.state;
     return (
       <>
-        <Header />
+        <Header clock={clock} />
         <Container fluid>
           <Summary data={data} />
           <CallerList data={data} />
