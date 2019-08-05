@@ -1,0 +1,47 @@
+{
+  "name": "phonathon-board",
+  "version": "1.0.0",
+  "description": "Phonathon management system for lazy supervisors. Available at [phonathon-management-system](https://nguyenhuyanhh.github.io/phonathon-management-system/).",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "7.5.5",
+    "@babel/preset-env": "7.5.5",
+    "@babel/preset-react": "7.0.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.21",
+    "@fortawesome/free-solid-svg-icons": "5.10.1",
+    "@fortawesome/react-fontawesome": "0.1.4",
+    "babel-loader": "8.0.6",
+    "bootstrap": "4.3.1",
+    "css-loader": "3.1.0",
+    "eslint": "6.1.0",
+    "eslint-plugin-react": "7.14.3",
+    "gh-pages": "2.1.0",
+    "prettier": "1.18.2",
+    "prop-types": "15.7.2",
+    "react": "16.8.6",
+    "react-bootstrap": "1.0.0-beta.10",
+    "react-dom": "16.8.6",
+    "shx": "0.3.2",
+    "style-loader": "0.23.1",
+    "webpack": "4.39.1",
+    "webpack-cli": "3.3.6",
+    "webpack-dev-server": "3.7.2"
+  },
+  "scripts": {
+    "build": "shx mkdir -p dist/ && shx cp index.html dist/ && webpack --mode production",
+    "build-legacy": "shx mkdir -p dist/ && shx cp -fr css/ js/ vendored/ dist/ && shx cp -f index-legacy.html dist/index.html",
+    "dev-server": "webpack-dev-server",
+    "deploy": "gh-pages -d dist --git git",
+    "clean": "shx rm -rf dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenhuyanhh/phonathon-board.git"
+  },
+  "author": "Nguyen Huy Anh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenhuyanhh/phonathon-board/issues"
+  },
+  "homepage": "https://github.com/nguyenhuyanhh/phonathon-board#readme"
+}
