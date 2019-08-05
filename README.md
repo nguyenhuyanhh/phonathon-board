@@ -11,5 +11,18 @@ Friendly Google Sheets-based interface to
 
 ## Development Notes
 
-This website is built using [Tabletop.js](https://github.com/jsoma/tabletop), [Bootstrap 4](https://getbootstrap.com/) and [Font Awesome 5](https://fontawesome.com/).
+This website is built using [React](https://reactjs.org/), [Bootstrap 4](https://getbootstrap.com/) (with [react-bootstrap](https://react-bootstrap.netlify.com/)) and [Font Awesome 5](https://fontawesome.com/).
+
 Feel free to clone and upgrade it, it's pretty much a work-in-progress.
+
+To pull all dependencies and run the development server:
+
+```bash
+npm i && npm run dev-server
+```
+
+To deploy to GitHub Pages:
+
+```npm
+npm run build && npm run deploy
+```
