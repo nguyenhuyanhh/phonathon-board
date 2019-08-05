@@ -9,7 +9,6 @@ import Summary from "./Summary";
 
 const URL =
   "https://spreadsheets.google.com/feeds/cells/1btD0w0p58ZNJzSfDRGtCiZCCjvK80OkLKOA0j9YXbic/2/public/values?alt=json";
-const CLOCK = 30;
 
 function groupBy(arr, property) {
   return arr.reduce(function(memo, x) {
@@ -41,18 +40,9 @@ function parse(results) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], clock: CLOCK };
+    this.state = { data: [] };
+    this.update = this.update.bind(this);
     this.update();
-  }
-
-  tick() {
-    let clock = this.state.clock;
-    if (clock === 1) {
-      this.setState({ clock: CLOCK });
-      this.update();
-    } else {
-      this.setState({ clock: clock - 1 });
-    }
   }
 
   update() {
@@ -63,19 +53,11 @@ class App extends React.Component {
       });
   }
 
-  componentDidMount() {
-    this.intervalId = setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
-
   render() {
-    const { data, clock } = this.state;
+    const { data } = this.state;
     return (
       <>
-        <Header clock={clock} />
+        <Header onClockReset={this.update} />
         <Container fluid>
           <Summary data={data} />
           <CallerList data={data} />

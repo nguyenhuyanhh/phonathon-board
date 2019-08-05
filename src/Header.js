@@ -20,30 +20,20 @@ class Header extends React.Component {
       "https://api.github.com/repos/nguyenhuyanhh/phonathon-board/git/refs/heads/master"
     )
       .then(res => res.json())
-      .then(
-        results => {
-          let url =
-            "https://api.github.com/repos/nguyenhuyanhh/phonathon-board/compare/" +
-            initSHA +
-            "..." +
-            results["object"]["sha"];
-          fetch(url)
-            .then(res => res.json())
-            .then(
-              results => {
-                this.setState({
-                  buildNo: (results["total_commits"] + 1).toString()
-                });
-              },
-              () => {
-                return;
-              }
-            );
-        },
-        () => {
-          return;
-        }
-      );
+      .then(results => {
+        let url =
+          "https://api.github.com/repos/nguyenhuyanhh/phonathon-board/compare/" +
+          initSHA +
+          "..." +
+          results["object"]["sha"];
+        fetch(url)
+          .then(res => res.json())
+          .then(results => {
+            this.setState({
+              buildNo: (results["total_commits"] + 1).toString()
+            });
+          });
+      });
   }
 
   render() {
@@ -52,7 +42,7 @@ class Header extends React.Component {
       <Navbar bg="dark" variant="dark" defaultExpanded>
         <Navbar.Brand>Phonathon Management System</Navbar.Brand>
         <Navbar.Text>
-          <Clock seconds={this.props.clock} />
+          <Clock onClockReset={this.props.onClockReset} />
         </Navbar.Text>
         <Nav className="ml-auto">
           <NavLink>
@@ -66,7 +56,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  clock: PropType.number.isRequired
+  onClockReset: PropType.func.isRequired
 };
 
 export default Header;
