@@ -45,7 +45,7 @@ class Header extends React.Component {
           <Clock onClockReset={this.props.onClockReset} />
         </Navbar.Text>
         <Nav className="ml-auto">
-          <NavLink>
+          <NavLink onClick={() => this.props.onClockReset()}>
             <FontAwesomeIcon icon={faSync} />
           </NavLink>
           <AboutModal buildNo={buildNo} />
