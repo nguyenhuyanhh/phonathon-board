@@ -13,19 +13,5 @@
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "no-console": "off"
-  },
-  "globals": {
-    "BoardCaller": false,
-    "BoardPledge": false,
-    "Board": false,
-    "SheetCaller": false,
-    "SheetShift": false,
-    "Sheet": false,
-    "TYPE_PL": false,
-    "TYPE_CC": false,
-    "TYPE_GR": false,
-    "comparePledgeAmount": false,
-    "comparePledgeOrder": false,
-    "Tabletop": false
   }
 }
